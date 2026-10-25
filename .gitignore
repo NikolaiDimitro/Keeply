@@ -1,7 +1,9 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
-# dependencies
+# Dependencies
 node_modules/
+jspm_packages/
+bower_components/
+web_modules/
 
 # Expo
 .expo/
@@ -17,27 +19,84 @@ expo-env.d.ts
 *.p12
 *.key
 *.mobileprovision
+/ios
+/android
 
 # Metro
 .metro-health-check*
 
-# debug
+# Logs and debug
+logs/
+*.log
 npm-debug.*
 yarn-debug.*
 yarn-error.*
+lerna-debug.log
 
-# macOS
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# macOS and certificates
 .DS_Store
 *.pem
 
-# local env files
+# Local environment files
 .env
 .env.*
 !.env.example
 
-# typescript
+# TypeScript
 *.tsbuildinfo
 
-# generated native folders
-/ios
-/android
+# Testing and coverage
+coverage/
+.nyc_output/
+*.lcov
+lib-cov/
+
+# Caches and generated files
+.cache/
+.parcel-cache/
+.firebase/
+.tern-port
+.vscode-test/
+.pnpm-store/
+.vite/
+.astro/
+.turbo/
+.next/
+.nuxt/
+.output/
+.svelte-kit/
+.docusaurus/
+.serverless/
+.dynamodb/
+.fusebox/
+.vuepress/dist/
+**/.vitepress/dist
+**/.vitepress/cache
+.temp/
+
+# Tooling
+.npm/
+.eslintcache
+.stylelintcache
+.node_repl_history
+.grunt
+.lock-wscript
+build/Release/
+*.tgz
+.yarn-integrity
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
