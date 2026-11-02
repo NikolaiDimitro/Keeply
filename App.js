@@ -5,6 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Home from './screens/home/home.jsx';
 import Registration from './screens/auth/registration.jsx';
 import Login from './screens/auth/login.jsx';
+import Create from './screens/create/create.jsx';
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -17,15 +18,7 @@ export default function App() {
         showsVerticalScrollIndicator={false}
       >
         <View style={[styles.testScreen, { height: screenHeight * 0.7 }]}>
-          <Home />
-        </View>
-
-        <View style={[styles.testScreen, { height: screenHeight * 0.7 }]}>
-          <Login />
-        </View>
-
-        <View style={[styles.testScreen, { height: screenHeight * 0.7 }]}>
-          <Registration />
+          <Create />
         </View>
       </ScrollView>
     </SafeAreaProvider>
