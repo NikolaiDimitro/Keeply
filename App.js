@@ -7,6 +7,7 @@ import Create from './screens/create/create.jsx';
 import Home from './screens/home/home.jsx';
 import Inventory from './screens/inventory/inventory.jsx';
 import ItemDetails from './screens/items/itemDetails.jsx';
+import ItemEdit from './screens/items/itemEdit.jsx';
 import Profile from './screens/profile/profile.jsx';
 
 const isAuthorizedUser = true; // Replace with your actual authentication logic
@@ -84,7 +85,12 @@ export default function App() {
               }}
             />
           ) : activeTab === 'details' ? (
-            <ItemDetails item={selectedItem} />
+            <ItemDetails
+              item={selectedItem}
+              onEdit={() => setActiveTab('edit')}
+            />
+          ) : activeTab === 'edit' ? (
+            <ItemEdit item={selectedItem} />
           ) : activeTab === 'add' ? (
             <Create />
           ) : (
@@ -97,7 +103,11 @@ export default function App() {
           )}
         </View>
         <Footer
-          activeTab={activeTab === 'details' ? 'inventory' : activeTab}
+          activeTab={
+            activeTab === 'details' || activeTab === 'edit'
+              ? 'inventory'
+              : activeTab
+          }
           onTabChange={setActiveTab}
         />
       </View>

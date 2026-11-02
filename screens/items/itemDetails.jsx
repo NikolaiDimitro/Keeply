@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 function DetailRow({ label, value }) {
     return (
@@ -9,7 +9,7 @@ function DetailRow({ label, value }) {
     );
 }
 
-export default function ItemDetails({ item }) {
+export default function ItemDetails({ item, onEdit }) {
     const documents = item.documents || [];
 
     return (
@@ -78,9 +78,13 @@ export default function ItemDetails({ item }) {
             </View>
 
             <View style={styles.actions}>
-                <View style={styles.editButton}>
+                <Pressable
+                    accessibilityRole="button"
+                    onPress={onEdit}
+                    style={styles.editButton}
+                >
                     <Text style={styles.editButtonText}>Промени вещта</Text>
-                </View>
+                </Pressable>
                 <View style={styles.deleteButton}>
                     <Text style={styles.deleteButtonText}>Изтрий вещта</Text>
                 </View>
