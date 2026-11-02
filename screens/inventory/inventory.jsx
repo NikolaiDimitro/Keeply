@@ -8,7 +8,7 @@ import {
     View,
 } from 'react-native';
 
-export default function Inventory({ items = [], onAddItem }) {
+export default function Inventory({ items = [], onAddItem, onSelectItem }) {
     const [search, setSearch] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Всички');
     const categories = useMemo(
@@ -33,7 +33,9 @@ export default function Inventory({ items = [], onAddItem }) {
 
     function renderItem({ item, index }) {
         return (
-            <View
+            <Pressable
+                accessibilityRole="button"
+                onPress={() => onSelectItem?.(item)}
                 style={[
                     styles.itemRow,
                     index === filteredItems.length - 1 && styles.lastItemRow,
@@ -49,7 +51,7 @@ export default function Inventory({ items = [], onAddItem }) {
                             'Без допълнителна информация'}
                     </Text>
                 </View>
-            </View>
+            </Pressable>
         );
     }
 

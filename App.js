@@ -6,6 +6,7 @@ import Footer from './components/Footer.jsx';
 import Create from './screens/create/create.jsx';
 import Home from './screens/home/home.jsx';
 import Inventory from './screens/inventory/inventory.jsx';
+import ItemDetails from './screens/items/itemDetails.jsx';
 import Profile from './screens/profile/profile.jsx';
 
 const isAuthorizedUser = true; // Replace with your actual authentication logic
@@ -18,6 +19,13 @@ const items = [
     location: 'Спалня',
     mark: 'С',
     color: '#E9FAF0',
+    price: '249,90 лв.',
+    purchaseDate: '12.03.2025',
+    warranty: '24 месеца',
+    warrantyEndDate: '12.03.2027',
+    store: 'Технополис',
+    notes: 'Използват се основно за работа и пътуване.',
+    documents: ['Касова бележка.pdf', 'Гаранционна карта.pdf'],
   },
   {
     id: 'sample-laptop',
@@ -55,6 +63,7 @@ const items = [
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('profile');
+  const [selectedItem, setSelectedItem] = useState(items[0]);
 
   return (
     <SafeAreaProvider>
@@ -66,7 +75,16 @@ export default function App() {
               user={{ displayName: 'Иван Иванов', email: 'ivan@example.com' }}
             />
           ) : activeTab === 'inventory' ? (
-            <Inventory items={items} onAddItem={() => setActiveTab('add')} />
+            <Inventory
+              items={items}
+              onAddItem={() => setActiveTab('add')}
+              onSelectItem={(item) => {
+                setSelectedItem(item);
+                setActiveTab('details');
+              }}
+            />
+          ) : activeTab === 'details' ? (
+            <ItemDetails item={selectedItem} />
           ) : activeTab === 'add' ? (
             <Create />
           ) : (
@@ -78,7 +96,10 @@ export default function App() {
             />
           )}
         </View>
-        <Footer activeTab={activeTab} onTabChange={setActiveTab} />
+        <Footer
+          activeTab={activeTab === 'details' ? 'inventory' : activeTab}
+          onTabChange={setActiveTab}
+        />
       </View>
     </SafeAreaProvider>
   );
