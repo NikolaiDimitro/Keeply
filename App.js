@@ -10,7 +10,7 @@ import ItemDetails from './screens/items/itemDetails.jsx';
 import ItemEdit from './screens/items/itemEdit.jsx';
 import Profile from './screens/profile/profile.jsx';
 
-const isAuthorizedUser = true; // Replace with your actual authentication logic
+const isAuthorizedUser = false; // Replace with your actual authentication logic
 
 const items = [
   {

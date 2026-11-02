@@ -1,4 +1,5 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import LoadingSpinner from './LoadingSpinner';
 
 export default function GuestHome() {
     return (
@@ -19,7 +20,7 @@ export default function GuestHome() {
                     удобно.
                 </Text>
             </View>
-
+            <LoadingSpinner label="Зареждане..." />
             <View style={styles.benefits}>
                 <View style={styles.benefitRow}>
                     <View style={styles.benefitMark}>
