@@ -5,8 +5,10 @@ import AppHeader from './components/AppHeader.jsx';
 import Footer from './components/Footer.jsx';
 import Create from './screens/create/create.jsx';
 import Home from './screens/home/home.jsx';
-import Registration from './screens/auth/registration.jsx';
 import Inventory from './screens/inventory/inventory.jsx';
+import Profile from './screens/profile/profile.jsx';
+
+const isAuthorizedUser = true; // Replace with your actual authentication logic
 
 const items = [
   {
@@ -52,20 +54,25 @@ const items = [
 ];
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('home');
+  const [activeTab, setActiveTab] = useState('profile');
 
   return (
     <SafeAreaProvider>
       <View style={styles.container}>
-        <AppHeader />
+        <AppHeader isLoggedIn={isAuthorizedUser} />
         <View style={styles.content}>
-          {activeTab === 'inventory' ? (
+          {activeTab === 'profile' ? (
+            <Profile
+              user={{ displayName: 'Иван Иванов', email: 'ivan@example.com' }}
+            />
+          ) : activeTab === 'inventory' ? (
             <Inventory items={items} onAddItem={() => setActiveTab('add')} />
           ) : activeTab === 'add' ? (
             <Create />
           ) : (
             <Home
               items={items}
+              isLoggedIn={isAuthorizedUser}
               onAddItem={() => setActiveTab('add')}
               onShowAll={() => setActiveTab('inventory')}
             />

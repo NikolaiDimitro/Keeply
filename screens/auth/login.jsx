@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import {
     KeyboardAvoidingView,
     Platform,
+    Pressable,
     ScrollView,
     StyleSheet,
     Text,
@@ -8,7 +10,10 @@ import {
     View,
 } from 'react-native';
 
-export default function Login() {
+export default function Login({ onLogin }) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -31,28 +36,36 @@ export default function Login() {
                         autoComplete="email"
                         autoCorrect={false}
                         keyboardType="email-address"
+                        onChangeText={setEmail}
                         placeholder="name@example.com"
                         placeholderTextColor="#8290A5"
                         returnKeyType="next"
                         style={styles.input}
                         textContentType="emailAddress"
+                        value={email}
                     />
 
                     <Text style={styles.label}>Парола</Text>
                     <TextInput
                         accessibilityLabel="Парола"
                         autoComplete="current-password"
+                        onChangeText={setPassword}
                         placeholder="Въведи паролата си"
                         placeholderTextColor="#8290A5"
                         returnKeyType="done"
                         secureTextEntry
                         style={styles.input}
                         textContentType="password"
+                        value={password}
                     />
 
-                    <View style={styles.button}>
+                    <Pressable
+                        accessibilityRole="button"
+                        onPress={() => onLogin({ email: email.trim(), password })}
+                        style={styles.button}
+                    >
                         <Text style={styles.buttonText}>Вход</Text>
-                    </View>
+                    </Pressable>
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>

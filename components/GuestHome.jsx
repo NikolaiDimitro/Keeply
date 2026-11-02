@@ -38,15 +38,6 @@ export default function GuestHome() {
                     </Text>
                 </View>
             </View>
-
-            <View style={styles.actions}>
-                <View style={styles.primaryButton}>
-                    <Text style={styles.primaryButtonText}>Създай профил</Text>
-                </View>
-                <View style={styles.secondaryButton}>
-                    <Text style={styles.secondaryButtonText}>Вече имаш профил? Вход</Text>
-                </View>
-            </View>
         </ScrollView>
     );
 }
@@ -130,30 +121,5 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 14,
         lineHeight: 20,
-    },
-    actions: {
-        gap: 10,
-    },
-    primaryButton: {
-        alignItems: 'center',
-        backgroundColor: '#B9F2D0',
-        borderRadius: 14,
-        justifyContent: 'center',
-        minHeight: 52,
-    },
-    primaryButtonText: {
-        color: '#172B4D',
-        fontSize: 15,
-        fontWeight: '700',
-    },
-    secondaryButton: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: 48,
-    },
-    secondaryButtonText: {
-        color: '#5474A5',
-        fontSize: 14,
-        fontWeight: '600',
     },
 });

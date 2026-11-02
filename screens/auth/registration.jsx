@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import {
     KeyboardAvoidingView,
     Platform,
+    Pressable,
     ScrollView,
     StyleSheet,
     Text,
@@ -8,7 +10,32 @@ import {
     View,
 } from 'react-native';
 
-export default function Registration() {
+export default function Registration({ onRegister, onNavigate }) {
+    const [displayName, setDisplayName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmedPassword, setConfirmedPassword] = useState('');
+    const [validationMessage, setValidationMessage] = useState('');
+
+    function submitRegistration() {
+        if (password !== confirmedPassword) {
+            setValidationMessage('Паролите не съвпадат.');
+            return;
+        }
+
+        if (!displayName.trim() || !email.trim() || !password) {
+            setValidationMessage('Попълни всички полета.');
+            return;
+        }
+
+        setValidationMessage('');
+        onRegister({
+            displayName: displayName.trim(),
+            email: email.trim(),
+            password,
+        });
+    }
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -30,11 +57,13 @@ export default function Registration() {
                         autoCapitalize="words"
                         autoComplete="name"
                         autoCorrect={false}
+                        onChangeText={setDisplayName}
                         placeholder="Въведи името си"
                         placeholderTextColor="#8290A5"
                         returnKeyType="next"
                         style={styles.input}
                         textContentType="name"
+                        value={displayName}
                     />
 
                     <Text style={styles.label}>Имейл</Text>
@@ -44,44 +73,64 @@ export default function Registration() {
                         autoComplete="email"
                         autoCorrect={false}
                         keyboardType="email-address"
+                        onChangeText={setEmail}
                         placeholder="name@example.com"
                         placeholderTextColor="#8290A5"
                         returnKeyType="next"
                         style={styles.input}
                         textContentType="emailAddress"
+                        value={email}
                     />
 
                     <Text style={styles.label}>Парола</Text>
                     <TextInput
                         accessibilityLabel="Парола"
                         autoComplete="new-password"
+                        onChangeText={setPassword}
                         placeholder="Създай парола"
                         placeholderTextColor="#8290A5"
                         returnKeyType="next"
                         secureTextEntry
                         style={styles.input}
                         textContentType="newPassword"
+                        value={password}
                     />
 
                     <Text style={styles.label}>Потвърди паролата</Text>
                     <TextInput
                         accessibilityLabel="Потвърди паролата"
                         autoComplete="new-password"
+                        onChangeText={setConfirmedPassword}
                         placeholder="Въведи паролата отново"
                         placeholderTextColor="#8290A5"
                         returnKeyType="done"
                         secureTextEntry
                         style={styles.input}
                         textContentType="newPassword"
+                        value={confirmedPassword}
                     />
 
-                    <View style={styles.button}>
+                    {validationMessage ? (
+                        <Text style={styles.validationMessage}>{validationMessage}</Text>
+                    ) : null}
+
+                    <Pressable
+                        accessibilityRole="button"
+                        onPress={submitRegistration}
+                        style={styles.button}
+                    >
                         <Text style={styles.buttonText}>Регистрация</Text>
-                    </View>
+                    </Pressable>
 
                     <Text style={styles.loginPrompt}>
                         Вече имаш профил?{' '}
-                        <Text style={styles.loginText}>Вход</Text>
+                        <Text
+                            accessibilityRole="button"
+                            onPress={() => onNavigate('login')}
+                            style={styles.loginText}
+                        >
+                            Вход
+                        </Text>
                     </Text>
                 </View>
             </ScrollView>
@@ -152,6 +201,11 @@ const styles = StyleSheet.create({
         color: '#172B4D',
         fontSize: 16,
         fontWeight: '700',
+    },
+    validationMessage: {
+        color: '#B42318',
+        fontSize: 13,
+        marginBottom: 12,
     },
     loginPrompt: {
         color: '#64748B',

@@ -2,8 +2,12 @@ import { StyleSheet, View } from 'react-native';
 import GuestHome from '../../components/GuestHome.jsx';
 import LoggedInHome from '../../components/LoggedInHome.jsx';
 
-export default function Home({ items, onAddItem, onShowAll }) {
-    const isLoggedIn = true; // Replace with your actual authentication logic
+export default function Home({
+    items,
+    isLoggedIn,
+    onAddItem,
+    onShowAll,
+}) {
 
     return (
         <View style={styles.container}>
