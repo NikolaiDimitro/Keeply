@@ -1,4 +1,4 @@
-import { Pressable, ScrollView,  Text, View } from 'react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { itemDetailsStyles as styles } from '../../styles/components';
 
 function DetailRow({ label, value }) {
@@ -93,5 +93,4 @@ export default function ItemDetails({ item, onEdit }) {
         </ScrollView>
     );
 }
-
 

@@ -1,4 +1,4 @@
-import { ActivityIndicator,  Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import { loadingSpinnerStyles as styles } from '../styles/components';
 
 export default function LoadingSpinner({
@@ -17,5 +17,4 @@ export default function LoadingSpinner({
         </View>
     );
 }
-
 

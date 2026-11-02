@@ -1,4 +1,4 @@
-import { ScrollView,  Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { profileStyles as styles } from '../../styles/components';
 
 export default function Profile({ user }) {
@@ -46,5 +46,4 @@ export default function Profile({ user }) {
         </ScrollView>
     );
 }
-
 

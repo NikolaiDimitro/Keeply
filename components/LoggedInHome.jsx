@@ -1,4 +1,4 @@
-import { Pressable, ScrollView,  Text, View } from 'react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { loggedInHomeStyles as styles } from '../styles/components';
 
 export default function LoggedInHome({ items = [], onShowAll, onAddItem }) {
@@ -161,5 +161,4 @@ export default function LoggedInHome({ items = [], onShowAll, onAddItem }) {
         </ScrollView>
     );
 }
-
 

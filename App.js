@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {  View } from 'react-native';
+import { View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppHeader from './components/AppHeader.jsx';
 import Footer from './components/Footer.jsx';
@@ -115,4 +115,3 @@ export default function App() {
     </SafeAreaProvider>
   );
 }
-

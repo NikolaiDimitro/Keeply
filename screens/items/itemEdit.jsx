@@ -1,4 +1,4 @@
-import { ScrollView,  Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { itemEditStyles as styles } from '../../styles/components';
 
 function EditField({ label, value, placeholder, multiline = false }) {
@@ -106,5 +106,4 @@ export default function ItemEdit({ item }) {
         </ScrollView>
     );
 }
-
 

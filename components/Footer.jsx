@@ -1,4 +1,4 @@
-import { Pressable,  Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { footerStyles as styles } from '../styles/components';
 
@@ -37,4 +37,3 @@ export default function Footer({ activeTab, onTabChange }) {
         </SafeAreaView>
     );
 }
-

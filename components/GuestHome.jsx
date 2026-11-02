@@ -1,4 +1,4 @@
-import { ScrollView,  Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import LoadingSpinner from './LoadingSpinner';
 import { guestHomeStyles as styles } from '../styles/components';
 
@@ -43,5 +43,4 @@ export default function GuestHome() {
         </ScrollView>
     );
 }
-
 

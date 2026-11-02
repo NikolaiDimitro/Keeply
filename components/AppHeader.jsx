@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Image, Pressable,  Text, View } from 'react-native';
+import { Image, Pressable, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { appHeaderStyles as styles } from '../styles/components';
 
@@ -69,4 +69,3 @@ export default function AppHeader({ isLoggedIn }) {
         </>
     );
 }
-
