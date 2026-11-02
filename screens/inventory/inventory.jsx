@@ -2,11 +2,12 @@ import { useMemo, useState } from 'react';
 import {
     FlatList,
     Pressable,
-    StyleSheet,
+    
     Text,
     TextInput,
     View,
 } from 'react-native';
+import { inventoryStyles as styles } from '../../styles/components';
 
 export default function Inventory({ items = [], onAddItem, onSelectItem }) {
     const [search, setSearch] = useState('');
@@ -137,151 +138,4 @@ export default function Inventory({ items = [], onAddItem, onSelectItem }) {
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingHorizontal: 22,
-        paddingTop: 20,
-    },
-    eyebrow: {
-        color: '#64748B',
-        fontSize: 10,
-        fontWeight: '700',
-        letterSpacing: 1.2,
-        marginBottom: 6,
-    },
-    heading: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 18,
-    },
-    title: {
-        color: '#172B4D',
-        fontSize: 27,
-        fontWeight: '700',
-    },
-    count: {
-        color: '#5474A5',
-        fontSize: 14,
-        fontWeight: '600',
-    },
-    searchInput: {
-        backgroundColor: '#FFFFFF',
-        borderColor: '#E2E8F0',
-        borderRadius: 12,
-        borderWidth: 1,
-        color: '#172B4D',
-        fontSize: 14,
-        minHeight: 48,
-        paddingHorizontal: 14,
-    },
-    categories: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: 8,
-        marginTop: 14,
-    },
-    categoryChip: {
-        backgroundColor: '#FFFFFF',
-        borderColor: '#E2E8F0',
-        borderRadius: 18,
-        borderWidth: 1,
-        paddingHorizontal: 13,
-        paddingVertical: 8,
-    },
-    selectedCategoryChip: {
-        backgroundColor: '#E9FAF0',
-        borderColor: '#B9F2D0',
-    },
-    categoryText: {
-        color: '#64748B',
-        fontSize: 12,
-        fontWeight: '600',
-    },
-    selectedCategoryText: {
-        color: '#258458',
-    },
-    listContent: {
-        paddingTop: 18,
-        paddingBottom: 24,
-    },
-    emptyListContent: {
-        flexGrow: 1,
-        justifyContent: 'center',
-    },
-    emptyState: {
-        alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-        borderColor: '#E2E8F0',
-        borderRadius: 16,
-        borderWidth: 1,
-        padding: 22,
-    },
-    emptyTitle: {
-        color: '#172B4D',
-        fontSize: 17,
-        fontWeight: '700',
-        textAlign: 'center',
-    },
-    emptyText: {
-        color: '#64748B',
-        fontSize: 14,
-        lineHeight: 20,
-        marginTop: 8,
-        textAlign: 'center',
-    },
-    itemRow: {
-        alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-        borderBottomColor: '#EEF2F7',
-        borderBottomWidth: 1,
-        flexDirection: 'row',
-        minHeight: 76,
-        paddingHorizontal: 14,
-    },
-    lastItemRow: {
-        borderBottomWidth: 0,
-    },
-    itemMark: {
-        alignItems: 'center',
-        backgroundColor: '#E9FAF0',
-        borderRadius: 12,
-        height: 42,
-        justifyContent: 'center',
-        marginRight: 12,
-        width: 42,
-    },
-    itemMarkText: {
-        color: '#172B4D',
-        fontSize: 16,
-        fontWeight: '700',
-    },
-    itemDetails: {
-        flex: 1,
-    },
-    itemName: {
-        color: '#172B4D',
-        fontSize: 14,
-        fontWeight: '600',
-    },
-    itemMeta: {
-        color: '#8290A5',
-        fontSize: 12,
-        marginTop: 5,
-    },
-    addButton: {
-        alignItems: 'center',
-        backgroundColor: '#B9F2D0',
-        borderRadius: 12,
-        marginTop: 18,
-        minHeight: 46,
-        justifyContent: 'center',
-        paddingHorizontal: 18,
-    },
-    addButtonText: {
-        color: '#172B4D',
-        fontSize: 14,
-        fontWeight: '700',
-    },
-});
+

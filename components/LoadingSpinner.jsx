@@ -1,4 +1,5 @@
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator,  Text, View } from 'react-native';
+import { loadingSpinnerStyles as styles } from '../styles/components';
 
 export default function LoadingSpinner({
     color = '#287A58',
@@ -17,14 +18,4 @@ export default function LoadingSpinner({
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        gap: 8,
-    },
-    label: {
-        fontSize: 13,
-        fontWeight: '600',
-    },
-});
+

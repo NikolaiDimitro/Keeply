@@ -1,6 +1,7 @@
-import { StyleSheet, View } from 'react-native';
+import {  View } from 'react-native';
 import GuestHome from '../../components/GuestHome.jsx';
 import LoggedInHome from '../../components/LoggedInHome.jsx';
+import { homeStyles as styles } from '../../styles/components';
 
 export default function Home({
     items,
@@ -24,8 +25,4 @@ export default function Home({
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
+

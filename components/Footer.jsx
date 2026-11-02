@@ -1,5 +1,6 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable,  Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { footerStyles as styles } from '../styles/components';
 
 const tabs = [
     { key: 'home', label: 'Начало', icon: '⌂' },
@@ -37,36 +38,3 @@ export default function Footer({ activeTab, onTabChange }) {
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#FFFFFF',
-        borderTopColor: '#E2E8F0',
-        borderTopWidth: 1,
-    },
-    tabs: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        paddingTop: 8,
-    },
-    tab: {
-        alignItems: 'center',
-        flex: 1,
-        minHeight: 52,
-        justifyContent: 'center',
-    },
-    icon: {
-        color: '#8290A5',
-        fontSize: 21,
-        fontWeight: '700',
-        lineHeight: 25,
-    },
-    label: {
-        color: '#8290A5',
-        fontSize: 11,
-        fontWeight: '600',
-        marginTop: 2,
-    },
-    activeText: {
-        color: '#258458',
-    },
-});

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import {  View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppHeader from './components/AppHeader.jsx';
 import Footer from './components/Footer.jsx';
@@ -9,6 +9,7 @@ import Inventory from './screens/inventory/inventory.jsx';
 import ItemDetails from './screens/items/itemDetails.jsx';
 import ItemEdit from './screens/items/itemEdit.jsx';
 import Profile from './screens/profile/profile.jsx';
+import { appStyles as styles } from './styles/components';
 
 const isAuthorizedUser = false; // Replace with your actual authentication logic
 
@@ -115,11 +116,3 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-  },
-});
