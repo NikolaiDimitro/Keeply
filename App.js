@@ -3,6 +3,7 @@ import { auth, db } from './config/firebase.js';
 import Footer from './components/Footer.jsx';
 import AppHeader from './components/AppHeader.jsx';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Login from './screens/auth/login.jsx';
 
 export default function App() {
   const projectId = auth.app.options.projectId;
@@ -33,6 +34,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingHorizontal: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 20,
   },
   title: {
     fontSize: 28,
