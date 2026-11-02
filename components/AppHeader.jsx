@@ -4,8 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 export default function AppHeader() {
     return (
         <>
-            <StatusBar style="light"
-                hidden={true} />
+            <StatusBar style="light" />
             <View style={styles.headerContainer}>
                 <View style={styles.brandRow}>
                     <View style={styles.brandMark}>
@@ -32,9 +31,11 @@ export default function AppHeader() {
 const styles = StyleSheet.create({
     headerContainer: {
         alignSelf: 'stretch',
+        alignItems: 'center',
         backgroundColor: '#172B4D',
         borderRadius: 0,
         padding: 22,
+        paddingTop: 42,
         marginBottom: 24,
         shadowColor: '#172B4D',
         shadowOffset: { width: 0, height: 8 },
@@ -45,6 +46,7 @@ const styles = StyleSheet.create({
     brandRow: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
     },
     brandImage: {
         width: 40,
@@ -70,17 +72,20 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         letterSpacing: 1.4,
         marginBottom: 3,
+        textAlign: 'center',
     },
     title: {
         color: '#FFFFFF',
         fontSize: 25,
         fontWeight: '700',
         letterSpacing: 0.2,
+        textAlign: 'center',
     },
     tagline: {
         color: '#D5DEEC',
         fontSize: 14,
         lineHeight: 21,
         marginTop: 18,
+        textAlign: 'center',
     },
 });
