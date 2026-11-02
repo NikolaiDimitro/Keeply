@@ -6,9 +6,9 @@ export default function Footer() {
     return (
 
         <SafeAreaView edges={['bottom']} style={styles.container}>
-            <Image source={require('../assets/1280px-Facebook_Logo_2023.png')} style={{ width: 50, height: 50 }} />
-            <Image source={require('../assets/1280px-Instagram_icon.png')} style={{ width: 50, height: 50 }} />
-            <Image source={require('../assets/icons8-x-50.png')} style={{ width: 50, height: 50 }} />
+            <Image source={require('../assets/1280px-Facebook_Logo_2023.png')} style={ styles.images } />
+            <Image source={require('../assets/1280px-Instagram_icon.png')} style={ styles.images } />
+            <Image source={require('../assets/icons8-x-50.png')} style={ styles.images } />
         </SafeAreaView>
 
     )
@@ -21,5 +21,10 @@ let styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 10,
         backgroundColor: '#172B4D'
+    },
+
+    images: {
+        width: 50,
+        height: 50
     }
 });
