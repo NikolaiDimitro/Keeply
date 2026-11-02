@@ -1,9 +1,26 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-const recentItems = [];
-const categories = [];
+export default function LoggedInHome({ items = [], onShowAll, onAddItem }) {
+    const recentItems = items.slice(0, 3);
+    const categories = Array.from(
+        items.reduce((categoryMap, item) => {
+            if (!item.category) {
+                return categoryMap;
+            }
 
-export default function LoggedInHome() {
+            const category = categoryMap.get(item.category) || {
+                name: item.category,
+                count: 0,
+                color: item.color || '#E9FAF0',
+                mark: item.mark || '•',
+            };
+            category.count += 1;
+            categoryMap.set(item.category, category);
+
+            return categoryMap;
+        }, new Map()).values(),
+    );
+
     return (
         <ScrollView
             contentContainerStyle={styles.content}
@@ -27,7 +44,7 @@ export default function LoggedInHome() {
                     <View>
                         <Text style={styles.summaryLabel}>Общо вещи</Text>
                         <Text style={styles.summaryCount}>
-                            {recentItems.length}
+                            {items.length}
                         </Text>
                     </View>
                     <View style={styles.summaryBadge}>
@@ -84,16 +101,20 @@ export default function LoggedInHome() {
 
             <View style={styles.sectionHeading}>
                 <Text style={styles.sectionTitle}>Последно добавени</Text>
-                {recentItems.length > 0 && (
+                <Pressable
+                    accessibilityRole="button"
+                    onPress={onShowAll}
+                    hitSlop={8}
+                >
                     <Text style={styles.sectionHint}>Виж всички</Text>
-                )}
+                </Pressable>
             </View>
 
             {recentItems.length > 0 ? (
                 <View style={styles.itemsList}>
                     {recentItems.map((item, index) => (
                         <View
-                            key={item.name}
+                            key={item.id || `${item.name}-${index}`}
                             style={[
                                 styles.itemRow,
                                 index === recentItems.length - 1 &&
@@ -128,10 +149,14 @@ export default function LoggedInHome() {
                 </View>
             )}
 
-            <View style={styles.addButton}>
+            <Pressable
+                accessibilityRole="button"
+                onPress={onAddItem}
+                style={styles.addButton}
+            >
                 <Text style={styles.addButtonText}>＋</Text>
                 <Text style={styles.addButtonLabel}>Добави вещ</Text>
-            </View>
+            </Pressable>
         </ScrollView>
     );
 }

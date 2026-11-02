@@ -1,30 +1,72 @@
-import { Image, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function Footer() {
+const tabs = [
+    { key: 'home', label: 'Начало', icon: '⌂' },
+    { key: 'inventory', label: 'Инвентар', icon: '▤' },
+    { key: 'add', label: 'Добави', icon: '+' },
+];
 
+export default function Footer({ activeTab, onTabChange }) {
     return (
-
         <SafeAreaView edges={['bottom']} style={styles.container}>
-            <Image source={require('../assets/1280px-Facebook_Logo_2023.png')} style={ styles.images } />
-            <Image source={require('../assets/1280px-Instagram_icon.png')} style={ styles.images } />
-            <Image source={require('../assets/icons8-x-50.png')} style={ styles.images } />
-        </SafeAreaView>
+            <View style={styles.tabs}>
+                {tabs.map((tab) => {
+                    const isActive = activeTab === tab.key;
 
-    )
+                    return (
+                        <Pressable
+                            accessibilityLabel={tab.label}
+                            accessibilityRole="button"
+                            accessibilityState={{ selected: isActive }}
+                            key={tab.key}
+                            onPress={() => onTabChange(tab.key)}
+                            style={styles.tab}
+                        >
+                            <Text style={[styles.icon, isActive && styles.activeText]}>
+                                {tab.icon}
+                            </Text>
+                            <Text style={[styles.label, isActive && styles.activeText]}>
+                                {tab.label}
+                            </Text>
+                        </Pressable>
+                    );
+                })}
+            </View>
+        </SafeAreaView>
+    );
 }
 
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
+        backgroundColor: '#FFFFFF',
+        borderTopColor: '#E2E8F0',
+        borderTopWidth: 1,
+    },
+    tabs: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        alignItems: 'center',
-        paddingVertical: 10,
-        backgroundColor: '#172B4D'
+        paddingTop: 8,
     },
-
-    images: {
-        width: 50,
-        height: 50
-    }
+    tab: {
+        alignItems: 'center',
+        flex: 1,
+        minHeight: 52,
+        justifyContent: 'center',
+    },
+    icon: {
+        color: '#8290A5',
+        fontSize: 21,
+        fontWeight: '700',
+        lineHeight: 25,
+    },
+    label: {
+        color: '#8290A5',
+        fontSize: 11,
+        fontWeight: '600',
+        marginTop: 2,
+    },
+    activeText: {
+        color: '#258458',
+    },
 });
