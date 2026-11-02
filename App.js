@@ -4,6 +4,7 @@ import Footer from './components/Footer.jsx';
 import AppHeader from './components/AppHeader.jsx';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Login from './screens/auth/login.jsx';
+import Registration from './screens/auth/registration.jsx';
 
 export default function App() {
   const projectId = auth.app.options.projectId;
@@ -18,6 +19,8 @@ export default function App() {
           <Text>Project ID: {projectId}</Text>
           <Text>Authentication: {auth ? 'OK' : 'Error'}</Text>
           <Text>Firestore: {db ? 'OK' : 'Error'}</Text>
+          <Login />
+          <Registration />
         </View>
         <Footer />
       </View>
