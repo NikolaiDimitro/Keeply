@@ -11,7 +11,7 @@ import ItemEdit from './screens/items/itemEdit.jsx';
 import Profile from './screens/profile/profile.jsx';
 import { appStyles as styles } from './styles/components';
 
-const isAuthorizedUser = false; // Replace with your actual authentication logic
+const isAuthorizedUser = true; // Replace with your actual authentication logic
 
 const items = [
   {
