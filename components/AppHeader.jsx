@@ -3,12 +3,7 @@ import { Image, Pressable, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { appHeaderStyles as styles } from '../styles/components';
 
-export default function AppHeader({
-    isLoggedIn,
-    onLoginPress,
-    onRegistrationPress,
-    compact = false,
-}) {
+export default function AppHeader({ isLoggedIn }) {
     const [menuVisible, setMenuVisible] = useState(false);
 
     return (

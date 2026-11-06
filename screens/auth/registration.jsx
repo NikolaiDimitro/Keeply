@@ -8,54 +8,18 @@ import {
     View,
     Pressable,
 } from 'react-native';
-import { useEffect, useRef, useState } from 'react';
-import { registerUser } from '../../services/authRequester';
 import { registrationStyles as styles } from '../../styles/components';
 
-const emailValidator = /^[A-Za-z0-9_%]+@(gmail|abv)\.[a-z]+$/i;
-
-export default function Registration() {
-    const [name, setName] = useState('');
+export default function Registration({ onRegister, onNavigate }) {
+    const [displayName, setDisplayName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const scrollViewRef = useRef(null);
+    const [confirmedPassword, setConfirmedPassword] = useState('');
+    const [validationMessage, setValidationMessage] = useState('');
 
-    useEffect(() => {
-        const keyboardSubscription = Keyboard.addListener('keyboardDidShow', () => {
-            requestAnimationFrame(() => {
-                scrollViewRef.current?.scrollToEnd({ animated: true });
-            });
-        });
-
-        return () => keyboardSubscription.remove();
-    }, []);
-
-    function updateField(setter, value) {
-
-        setter(value);
-        setError('');
-
-    }
-
-    async function handleRegistration() {
-
-        if (isSubmitting) {
-            return;
-        }
-
-        const trimmedName = name.trim();
-        const trimmedEmail = email.trim();
-
-        if (!trimmedName || !trimmedEmail || !password || !confirmPassword) {
-            setError('Моля, попълнете всички полета.');
-            return;
-        }
-
-        if (!emailValidator.test(trimmedEmail)) {
-            setError('Въведете валиден имейл адрес от Gmail или ABV.');
+    function submitRegistration() {
+        if (password !== confirmedPassword) {
+            setValidationMessage('Паролите не съвпадат.');
             return;
         }
 
@@ -64,36 +28,12 @@ export default function Registration() {
             return;
         }
 
-        if (trimmedName.length < 6) {
-
-            setError('Дължината на името трябва да бъде поне 6 символа');
-            return;
-
-        }
-
-        if (password.length < 6) {
-
-            setError('Дължината на паролата трябва да бъде поне 6 символа');
-            return;
-
-        }
-
-        setError('');
-        setIsSubmitting(true);
-
-        try {
-
-            await registerUser(trimmedName, trimmedEmail, password);
-
-        } catch (registrationError) {
-
-            setError(registrationError?.message || 'Възникна грешка при регистрацията.');
-
-        } finally {
-
-            setIsSubmitting(false);
-
-        }
+        setValidationMessage('');
+        onRegister({
+            displayName: displayName.trim(),
+            email: email.trim(),
+            password,
+        });
     }
 
     return (
@@ -168,19 +108,11 @@ export default function Registration() {
                         secureTextEntry
                         style={styles.input}
                         textContentType="newPassword"
-                        value={confirmPassword}
-                        onChangeText={(value) => updateField(setConfirmPassword, value)}
-                        onFocus={() => {
-                            requestAnimationFrame(() => {
-                                scrollViewRef.current?.scrollToEnd({ animated: true });
-                            });
-                        }}
+                        value={confirmedPassword}
                     />
 
-                    {error ? (
-                        <Text style={styles.validationMessage} accessibilityRole="alert">
-                            {error}
-                        </Text>
+                    {validationMessage ? (
+                        <Text style={styles.validationMessage}>{validationMessage}</Text>
                     ) : null}
 
                     <Pressable

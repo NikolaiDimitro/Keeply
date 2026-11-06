@@ -1399,7 +1399,14 @@ export const registrationStyles = StyleSheet.create({
         fontSize: 13,
         marginBottom: 12,
     },
-    buttonDisabled: {
-        opacity: 0.6,
+    loginPrompt: {
+        color: '#64748B',
+        fontSize: 14,
+        marginTop: 22,
+        textAlign: 'center',
+    },
+    loginText: {
+        color: '#172B4D',
+        fontWeight: '700',
     },
 });
