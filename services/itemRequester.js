@@ -1,53 +1,66 @@
 import { collection, getDoc, getDocs, setDoc, setDocs } from 'firebase/firestore';
 import { db } from '../config/firebase';
 
-export async function getAllRequest() {
+export async function getAllItems() {
 
-    const snapshot = await getDocs(collection(db, 'request'));
+    const snapshot = await getDocs(collection(db, 'items'));
 
-    if (snapshot.empty) {
+    try {
 
-        return null;
+        return snapshot.docs.map((doc) => ({ docId: doc.id, ...doc.data() }));
 
-    } else {
+    } catch (err) {
 
-        return snapshot.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
+        return err;
 
     }
 }
 
 export async function getOneItem(docId) {
 
-    const snapshot = await getDoc(doc(docId));
+    const snapshot = await getDoc(doc(db, 'items', docId));
 
-    return snapshot.exists() ? { docId: snapshot.id, ...snapshot.data() } : null;
+    try {
+
+        return { docId: snapshot.id, ...snapshot.data() };
+
+    } catch (err) {
+
+        return err;
+
+    }
 
 }
 
 export async function addRequest(data) {
 
-    const snapshot = await setDoc(doc(collection(db, 'request')), data);
+    const snapshot = await setDoc(doc(collection(db, 'items')), data);
 
-    if (!snapshot) {
+    try {
 
-        return null;
+        return { docId: snapshot.id, ...data };
+
+    } catch (err) {
+
+        return err;
 
     }
-
-    return { docId: snapshot.id, ...data };
 
 }
 
 export async function updateRequest(docId, data) {
 
-    const snapshot = await setDoc(doc(db, 'request', docId), data, { merge: true }).then;
+    const snapshot = await setDoc(doc(db, 'items', docId), data, { merge: true });
 
-    if (!snapshot) {
+    try {
 
-        return null;
+
+        return { docId: snapshot.id, ...data };
+
+    } catch (err) {
+
+        return err;
 
     }
-
-    return { docId, ...data };
 
 }

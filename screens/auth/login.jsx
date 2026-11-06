@@ -2,7 +2,6 @@ import { useState } from 'react';
 import {
     KeyboardAvoidingView,
     Platform,
-    Pressable,
     ScrollView,
     
     Text,
@@ -11,7 +10,7 @@ import {
 } from 'react-native';
 import { loginStyles as styles } from '../../styles/components';
 
-export default function Login({ onLogin }) {
+export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -60,17 +59,11 @@ export default function Login({ onLogin }) {
                         value={password}
                     />
 
-                    <Pressable
-                        accessibilityRole="button"
-                        onPress={() => onLogin({ email: email.trim(), password })}
-                        style={styles.button}
-                    >
+                    <View style={styles.button}>
                         <Text style={styles.buttonText}>Вход</Text>
-                    </Pressable>
+                    </View>
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>
     );
 }
-
-
