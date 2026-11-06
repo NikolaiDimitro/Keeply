@@ -8,10 +8,10 @@ import Home from './screens/home/home.jsx';
 import Inventory from './screens/inventory/inventory.jsx';
 import ItemDetails from './screens/items/itemDetails.jsx';
 import ItemEdit from './screens/items/itemEdit.jsx';
+import Login from './screens/auth/login.jsx';
 import Profile from './screens/profile/profile.jsx';
+import Registration from './screens/auth/registration.jsx';
 import { appStyles as styles } from './styles/components';
-
-const isAuthorizedUser = true; // Replace with your actual authentication logic
 
 const items = [
   {
@@ -66,13 +66,22 @@ const items = [
 export default function App() {
   const [activeTab, setActiveTab] = useState('profile');
   const [selectedItem, setSelectedItem] = useState(items[0]);
+  const isAuthorizedUser = false;
 
   return (
     <SafeAreaProvider>
       <View style={styles.container}>
-        <AppHeader isLoggedIn={isAuthorizedUser} />
+        <AppHeader
+          isLoggedIn={isAuthorizedUser}
+          onLoginPress={() => setActiveTab('login')}
+          onRegistrationPress={() => setActiveTab('registration')}
+        />
         <View style={styles.content}>
-          {activeTab === 'profile' ? (
+          {activeTab === 'login' ? (
+            <Login />
+          ) : activeTab === 'registration' ? (
+            <Registration onNavigate={setActiveTab} />
+          ) : activeTab === 'profile' ? (
             <Profile
               user={{ displayName: 'Иван Иванов', email: 'ivan@example.com' }}
             />

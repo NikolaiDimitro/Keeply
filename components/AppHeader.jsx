@@ -3,7 +3,11 @@ import { Image, Pressable, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { appHeaderStyles as styles } from '../styles/components';
 
-export default function AppHeader({ isLoggedIn }) {
+export default function AppHeader({
+    isLoggedIn,
+    onLoginPress,
+    onRegistrationPress,
+}) {
     const [menuVisible, setMenuVisible] = useState(false);
 
     return (
@@ -54,12 +58,26 @@ export default function AppHeader({ isLoggedIn }) {
                                 </>
                             ) : (
                                 <>
-                                    <View style={styles.menuItem}>
+                                    <Pressable
+                                        accessibilityRole="button"
+                                        onPress={() => {
+                                            setMenuVisible(false);
+                                            onLoginPress();
+                                        }}
+                                        style={styles.menuItem}
+                                    >
                                         <Text style={styles.menuItemText}>Вход</Text>
-                                    </View>
-                                    <View style={[styles.menuItem, styles.lastMenuItem]}>
+                                    </Pressable>
+                                    <Pressable
+                                        accessibilityRole="button"
+                                        onPress={() => {
+                                            setMenuVisible(false);
+                                            onRegistrationPress();
+                                        }}
+                                        style={[styles.menuItem, styles.lastMenuItem]}
+                                    >
                                         <Text style={styles.menuItemText}>Регистрация</Text>
-                                    </View>
+                                    </Pressable>
                                 </>
                             )}
                         </View>

@@ -402,6 +402,11 @@ export const guestHomeStyles = StyleSheet.create({
         marginBottom: 20,
         width: 56,
     },
+    logo: {
+        height: 36,
+        resizeMode: 'contain',
+        width: 36,
+    },
     logoMarkText: {
         color: '#172B4D',
         fontSize: 24,
@@ -1389,6 +1394,9 @@ export const registrationStyles = StyleSheet.create({
         color: '#B42318',
         fontSize: 13,
         marginBottom: 12,
+    },
+    buttonDisabled: {
+        opacity: 0.6,
     },
     loginPrompt: {
         color: '#64748B',

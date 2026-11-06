@@ -1,40 +1,87 @@
-import { useState } from 'react';
 import {
     KeyboardAvoidingView,
     Platform,
-    Pressable,
     ScrollView,
-    
     Text,
     TextInput,
     View,
+    Pressable,
 } from 'react-native';
+import { useState } from 'react';
+import { registerUser } from '../../services/authRequester';
 import { registrationStyles as styles } from '../../styles/components';
 
-export default function Registration({ onRegister, onNavigate }) {
-    const [displayName, setDisplayName] = useState('');
+const emailValidator = /^[A-Za-z0-9_%]+@(gmail|abv)\.[a-z]+$/i;
+
+export default function Registration({ onNavigate }) {
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmedPassword, setConfirmedPassword] = useState('');
-    const [validationMessage, setValidationMessage] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    function submitRegistration() {
-        if (password !== confirmedPassword) {
-            setValidationMessage('Паролите не съвпадат.');
+    function updateField(setter, value) {
+
+        setter(value);
+        setError('');
+
+    }
+
+    async function handleRegistration() {
+
+        if (isSubmitting) {
             return;
         }
 
-        if (!displayName.trim() || !email.trim() || !password) {
-            setValidationMessage('Попълни всички полета.');
+        const trimmedName = name.trim();
+        const trimmedEmail = email.trim();
+
+        if (!trimmedName || !trimmedEmail || !password || !confirmPassword) {
+            setError('Моля, попълнете всички полета.');
             return;
         }
 
-        setValidationMessage('');
-        onRegister({
-            displayName: displayName.trim(),
-            email: email.trim(),
-            password,
-        });
+        if (!emailValidator.test(trimmedEmail)) {
+            setError('Въведете валиден имейл адрес от Gmail или ABV.');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setError('Паролите не съвпадат.');
+            return;
+        }
+
+        if (trimmedName.length < 6) {
+
+            setError('Дължината на името трябва да бъде поне 6 символа');
+            return;
+
+        }
+
+        if (password.length < 6) {
+
+            setError('Дължината на паролата трябва да бъде поне 6 символа');
+            return;
+            
+        }
+
+        setError('');
+        setIsSubmitting(true);
+
+        try {
+
+            await registerUser(trimmedName, trimmedEmail, password);
+
+        } catch (registrationError) {
+
+            setError(registrationError?.message || 'Възникна грешка при регистрацията.');
+
+        } finally {
+
+            setIsSubmitting(false);
+
+        }
     }
 
     return (
@@ -58,13 +105,13 @@ export default function Registration({ onRegister, onNavigate }) {
                         autoCapitalize="words"
                         autoComplete="name"
                         autoCorrect={false}
-                        onChangeText={setDisplayName}
                         placeholder="Въведи името си"
                         placeholderTextColor="#8290A5"
                         returnKeyType="next"
                         style={styles.input}
                         textContentType="name"
-                        value={displayName}
+                        value={name}
+                        onChangeText={(value) => updateField(setName, value)}
                     />
 
                     <Text style={styles.label}>Имейл</Text>
@@ -74,20 +121,19 @@ export default function Registration({ onRegister, onNavigate }) {
                         autoComplete="email"
                         autoCorrect={false}
                         keyboardType="email-address"
-                        onChangeText={setEmail}
                         placeholder="name@example.com"
                         placeholderTextColor="#8290A5"
                         returnKeyType="next"
                         style={styles.input}
                         textContentType="emailAddress"
                         value={email}
+                        onChangeText={(value) => updateField(setEmail, value)}
                     />
 
                     <Text style={styles.label}>Парола</Text>
                     <TextInput
                         accessibilityLabel="Парола"
                         autoComplete="new-password"
-                        onChangeText={setPassword}
                         placeholder="Създай парола"
                         placeholderTextColor="#8290A5"
                         returnKeyType="next"
@@ -95,32 +141,39 @@ export default function Registration({ onRegister, onNavigate }) {
                         style={styles.input}
                         textContentType="newPassword"
                         value={password}
+                        onChangeText={(value) => updateField(setPassword, value)}
                     />
 
                     <Text style={styles.label}>Потвърди паролата</Text>
                     <TextInput
                         accessibilityLabel="Потвърди паролата"
                         autoComplete="new-password"
-                        onChangeText={setConfirmedPassword}
                         placeholder="Въведи паролата отново"
                         placeholderTextColor="#8290A5"
                         returnKeyType="done"
                         secureTextEntry
                         style={styles.input}
                         textContentType="newPassword"
-                        value={confirmedPassword}
+                        value={confirmPassword}
+                        onChangeText={(value) => updateField(setConfirmPassword, value)}
                     />
 
-                    {validationMessage ? (
-                        <Text style={styles.validationMessage}>{validationMessage}</Text>
+                    {error ? (
+                        <Text style={styles.validationMessage} accessibilityRole="alert">
+                            {error}
+                        </Text>
                     ) : null}
 
                     <Pressable
                         accessibilityRole="button"
-                        onPress={submitRegistration}
-                        style={styles.button}
+                        accessibilityState={{ disabled: isSubmitting }}
+                        disabled={isSubmitting}
+                        onPress={handleRegistration}
+                        style={[styles.button, isSubmitting && styles.buttonDisabled]}
                     >
-                        <Text style={styles.buttonText}>Регистрация</Text>
+                        <Text style={styles.buttonText}>
+                            {isSubmitting ? 'Регистриране...' : 'Регистрация'}
+                        </Text>
                     </Pressable>
 
                     <Text style={styles.loginPrompt}>
@@ -138,4 +191,3 @@ export default function Registration({ onRegister, onNavigate }) {
         </KeyboardAvoidingView>
     );
 }
-

@@ -1,5 +1,4 @@
-import { ScrollView, Text, View } from 'react-native';
-import LoadingSpinner from './LoadingSpinner';
+import { ScrollView, Text, View, Image } from 'react-native';
 import { guestHomeStyles as styles } from '../styles/components';
 
 export default function GuestHome() {
@@ -10,7 +9,7 @@ export default function GuestHome() {
         >
             <View style={styles.hero}>
                 <View style={styles.logoMark}>
-                    <Text style={styles.logoMarkText}>К</Text>
+                    <Image source={require('../assets/connectivity.png')} style={styles.logo} />
                 </View>
                 <Text style={styles.eyebrow}>ДОБРЕ ДОШЪЛ В KEEPly</Text>
                 <Text style={styles.title}>
@@ -21,7 +20,6 @@ export default function GuestHome() {
                     удобно.
                 </Text>
             </View>
-            <LoadingSpinner label="Зареждане..." />
             <View style={styles.benefits}>
                 <View style={styles.benefitRow}>
                     <View style={styles.benefitMark}>

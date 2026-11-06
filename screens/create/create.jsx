@@ -5,7 +5,7 @@ import {
     Platform,
     Pressable,
     ScrollView,
-    
+
     Switch,
     Text,
     TextInput,
@@ -14,6 +14,7 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as DocumentPicker from 'expo-document-picker';
 import { createStyles as styles } from '../../styles/components';
+import { addRequest } from '../../services/itemRequester';
 
 const documentTypes = [
     'Касова бележка',
@@ -299,7 +300,7 @@ export default function Create() {
                     ))}
 
                     <View style={styles.submitButton}>
-                        <Text style={styles.submitButtonText}>Запази вещта</Text>
+                        <Text style={styles.submitButtonText} onPress={addRequest}>Запази вещта</Text>
                     </View>
                 </View>
             </ScrollView>
