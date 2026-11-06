@@ -17,6 +17,10 @@ export const appHeaderStyles = StyleSheet.create({
         position: 'relative',
         zIndex: 1,
     },
+    compactHeader: {
+        marginBottom: 8,
+        padding: 12,
+    },
     brandRow: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -1332,9 +1336,9 @@ export const registrationStyles = StyleSheet.create({
     },
     scrollContent: {
         flexGrow: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         paddingHorizontal: 24,
-        paddingVertical: 28,
+        paddingVertical: 16,
     },
     card: {
         alignSelf: 'center',
@@ -1397,15 +1401,5 @@ export const registrationStyles = StyleSheet.create({
     },
     buttonDisabled: {
         opacity: 0.6,
-    },
-    loginPrompt: {
-        color: '#64748B',
-        fontSize: 14,
-        marginTop: 22,
-        textAlign: 'center',
-    },
-    loginText: {
-        color: '#172B4D',
-        fontWeight: '700',
     },
 });

@@ -1,5 +1,6 @@
 import {
     KeyboardAvoidingView,
+    Keyboard,
     Platform,
     ScrollView,
     Text,
@@ -7,19 +8,30 @@ import {
     View,
     Pressable,
 } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { registerUser } from '../../services/authRequester';
 import { registrationStyles as styles } from '../../styles/components';
 
 const emailValidator = /^[A-Za-z0-9_%]+@(gmail|abv)\.[a-z]+$/i;
 
-export default function Registration({ onNavigate }) {
+export default function Registration() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const scrollViewRef = useRef(null);
+
+    useEffect(() => {
+        const keyboardSubscription = Keyboard.addListener('keyboardDidShow', () => {
+            requestAnimationFrame(() => {
+                scrollViewRef.current?.scrollToEnd({ animated: true });
+            });
+        });
+
+        return () => keyboardSubscription.remove();
+    }, []);
 
     function updateField(setter, value) {
 
@@ -63,7 +75,7 @@ export default function Registration({ onNavigate }) {
 
             setError('Дължината на паролата трябва да бъде поне 6 символа');
             return;
-            
+
         }
 
         setError('');
@@ -86,12 +98,14 @@ export default function Registration({ onNavigate }) {
 
     return (
         <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            behavior={Platform.OS === 'ios' ? 'padding' :  Platform.OS === 'android' ? 'height' : undefined}
             style={styles.keyboardAvoidingView}
         >
             <ScrollView
                 contentContainerStyle={styles.scrollContent}
+                keyboardDismissMode="on-drag"
                 keyboardShouldPersistTaps="handled"
+                ref={scrollViewRef}
             >
                 <View style={styles.card}>
                     <Text style={styles.title}>Създай профил</Text>
@@ -156,6 +170,11 @@ export default function Registration({ onNavigate }) {
                         textContentType="newPassword"
                         value={confirmPassword}
                         onChangeText={(value) => updateField(setConfirmPassword, value)}
+                        onFocus={() => {
+                            requestAnimationFrame(() => {
+                                scrollViewRef.current?.scrollToEnd({ animated: true });
+                            });
+                        }}
                     />
 
                     {error ? (
@@ -176,16 +195,6 @@ export default function Registration({ onNavigate }) {
                         </Text>
                     </Pressable>
 
-                    <Text style={styles.loginPrompt}>
-                        Вече имаш профил?{' '}
-                        <Text
-                            accessibilityRole="button"
-                            onPress={() => onNavigate('login')}
-                            style={styles.loginText}
-                        >
-                            Вход
-                        </Text>
-                    </Text>
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>

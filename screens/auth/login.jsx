@@ -16,11 +16,12 @@ export default function Login() {
 
     return (
         <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
             style={styles.keyboardAvoidingView}
         >
             <ScrollView
                 contentContainerStyle={styles.scrollContent}
+                keyboardDismissMode="on-drag"
                 keyboardShouldPersistTaps="handled"
             >
                 <View style={styles.card}>

@@ -7,13 +7,14 @@ export default function AppHeader({
     isLoggedIn,
     onLoginPress,
     onRegistrationPress,
+    compact = false,
 }) {
     const [menuVisible, setMenuVisible] = useState(false);
 
     return (
         <>
             <StatusBar style="light" />
-            <View style={styles.headerContainer}>
+            <View style={[styles.headerContainer, compact && styles.compactHeader]}>
                 <View style={styles.brandRow}>
                     <View style={styles.brandMark}>
                         <Image
@@ -28,10 +29,12 @@ export default function AppHeader({
                         <Text style={styles.title}>Keeply</Text>
                     </View>
                 </View>
-                <Text style={styles.tagline}>
-                    Запази важното. Не губи ценното.
-                </Text>
-                <View style={styles.accountRow}>
+                {!compact && (
+                    <Text style={styles.tagline}>
+                        Запази важното. Не губи ценното.
+                    </Text>
+                )}
+                {!compact && <View style={styles.accountRow}>
                     <Pressable
                         accessibilityLabel={isLoggedIn ? 'Отвори меню за профила' : 'Отвори меню за вход'}
                         accessibilityRole="button"
@@ -82,7 +85,7 @@ export default function AppHeader({
                             )}
                         </View>
                     )}
-                </View>
+                </View>}
             </View>
         </>
     );
