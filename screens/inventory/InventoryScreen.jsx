@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { inventoryStyles as styles } from '../../styles/components';
 
-export default function Inventory({ items = [], onAddItem, onSelectItem }) {
+export default function InventoryScreen({ items = [], onAddItem, onSelectItem }) {
     const [search, setSearch] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Всички');
     const categories = useMemo(

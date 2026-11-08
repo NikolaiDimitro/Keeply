@@ -10,7 +10,7 @@ function DetailRow({ label, value }) {
     );
 }
 
-export default function ItemDetails({ item, onEdit }) {
+export default function DetailsScreen({ item, onEdit }) {
     const documents = item.documents || [];
 
     return (

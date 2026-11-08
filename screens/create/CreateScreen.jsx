@@ -48,7 +48,7 @@ function addMonths(date, months) {
     return result;
 }
 
-export default function Create() {
+export default function CreateScreen() {
     const [isImportant, setIsImportant] = useState(false);
     const [attachments, setAttachments] = useState([]);
     const [purchaseDate, setPurchaseDate] = useState(null);

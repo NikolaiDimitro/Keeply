@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { registrationStyles as styles } from '../../styles/components';
 
-export default function Registration({ onRegister, onNavigate }) {
+export default function RegistrationScreen({ onRegister, onNavigate }) {
     const [displayName, setDisplayName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

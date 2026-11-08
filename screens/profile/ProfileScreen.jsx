@@ -1,7 +1,7 @@
 import { ScrollView, Text, View } from 'react-native';
 import { profileStyles as styles } from '../../styles/components';
 
-export default function Profile({ user }) {
+export default function ProfileScreen({ user }) {
     const displayName = user?.displayName || 'Иван Иванов';
     const email = user?.email || 'ivan@example.com';
 

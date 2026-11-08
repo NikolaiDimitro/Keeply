@@ -1,10 +1,12 @@
 import { View } from 'react-native';
 import GuestHome from '../../components/GuestHome.jsx';
 import LoggedInHome from '../../components/LoggedInHome.jsx';
-import { homeStyles as styles } from '../../styles/components';
+import { homeStyles as styles } from '../../styles/components.js';
+import { createNativeBottomTabNavigator } from '@react-navigation/bottom-tabs/unstable';
 
-export default function Home({
-    items,
+let TabNavigation = createNativeBottomTabNavigator();
+
+export default function HomeScreen({
     isLoggedIn,
     onAddItem,
     onShowAll,
