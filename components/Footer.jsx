@@ -8,7 +8,7 @@ const tabs = [
     { key: 'add', label: 'Добави', icon: '+' },
 ];
 
-export default function Footer({ activeTab, onTabChange }) {
+export default function FooterComponent({ activeTab, onTabChange }) {
     return (
         <SafeAreaView edges={['bottom']} style={styles.container}>
             <View style={styles.tabs}>

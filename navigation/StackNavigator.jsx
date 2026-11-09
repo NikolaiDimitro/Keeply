@@ -13,7 +13,7 @@ let Stack = createNativeStackNavigator();
 
 export default function StackNav() {
 
-    const [isAuthenticated, setAuthenticated] = useState(false);
+    const [isAuthenticated, setAuthenticated] = useState(true);
 
     return (
 
@@ -28,7 +28,7 @@ export default function StackNav() {
                         component={HomeScreen} 
                         initialParams={{ isAuthenticated }}/>
                     <Stack.Screen
-                        name="Login"
+                        name="Profil"
                         component={ProfileScreen} />
                     <Stack.Screen
                         name="Create"

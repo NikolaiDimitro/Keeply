@@ -3,7 +3,12 @@ import { Image, Pressable, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { appHeaderStyles as styles } from '../styles/components';
 
-export default function AppHeader({ isLoggedIn }) {
+export default function AppHeaderComponent({
+    isLoggedIn,
+    compact = false,
+    onLoginPress,
+    onRegistrationPress,
+}) {
     const [menuVisible, setMenuVisible] = useState(false);
 
     return (
@@ -11,17 +16,71 @@ export default function AppHeader({ isLoggedIn }) {
             <StatusBar style="light" />
             <View style={[styles.headerContainer, compact && styles.compactHeader]}>
                 <View style={styles.brandRow}>
-                    <View style={styles.brandMark}>
-                        <Image
-                            source={require('../assets/connectivity.png')}
-                            style={styles.brandImage}
-                            resizeMode="contain"
-                            accessibilityLabel="Keeply Logo"
-                        />
-                    </View>
-                    <View>
-                        <Text style={styles.eyebrow}>ТВОЯТ ЛИЧЕН ИНВЕНТАР</Text>
-                        <Text style={styles.title}>Keeply</Text>
+                    {!compact && <View style={styles.accountRow}>
+                        <Pressable
+                            accessibilityLabel={isLoggedIn ? 'Отвори меню за профила' : 'Отвори меню за вход'}
+                            accessibilityRole="button"
+                            accessibilityState={{ expanded: menuVisible }}
+                            onPress={() => setMenuVisible((visible) => !visible)}
+                            style={styles.accountButton}
+                        >
+                            <View style={styles.menuIcon}>
+                                <View style={styles.menuIconLine} />
+                                <View style={styles.menuIconLine} />
+                                <View style={styles.menuIconLine} />
+                            </View>
+                        </Pressable>
+                        {menuVisible && (
+                            <View style={styles.menu}>
+                                {isLoggedIn ? (
+                                    <>
+                                        <View style={styles.menuItem}>
+                                            <Text style={styles.menuItemText}>Моят профил</Text>
+                                        </View>
+                                        <View style={[styles.menuItem, styles.lastMenuItem]}>
+                                            <Text style={styles.menuItemText}>Изход</Text>
+                                        </View>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Pressable
+                                            accessibilityRole="button"
+                                            onPress={() => {
+                                                setMenuVisible(false);
+                                                onLoginPress();
+                                            }}
+                                            style={styles.menuItem}
+                                        >
+                                            <Text style={styles.menuItemText}>Вход</Text>
+                                        </Pressable>
+                                        <Pressable
+                                            accessibilityRole="button"
+                                            onPress={() => {
+                                                setMenuVisible(false);
+                                                onRegistrationPress();
+                                            }}
+                                            style={[styles.menuItem, styles.lastMenuItem]}
+                                        >
+                                            <Text style={styles.menuItemText}>Регистрация</Text>
+                                        </Pressable>
+                                    </>
+                                )}
+                            </View>
+                        )}
+                    </View>}
+                    <View style={styles.brandInfo}>
+                        <View style={styles.brandMark}>
+                            <Image
+                                source={require('../assets/connectivity.png')}
+                                style={styles.brandImage}
+                                resizeMode="contain"
+                                accessibilityLabel="Keeply Logo"
+                            />
+                        </View>
+                        <View>
+                            <Text style={styles.eyebrow}>ТВОЯТ ЛИЧЕН ИНВЕНТАР</Text>
+                            <Text style={styles.title}>Keeply</Text>
+                        </View>
                     </View>
                 </View>
                 {!compact && (
@@ -29,58 +88,6 @@ export default function AppHeader({ isLoggedIn }) {
                         Запази важното. Не губи ценното.
                     </Text>
                 )}
-                {!compact && <View style={styles.accountRow}>
-                    <Pressable
-                        accessibilityLabel={isLoggedIn ? 'Отвори меню за профила' : 'Отвори меню за вход'}
-                        accessibilityRole="button"
-                        accessibilityState={{ expanded: menuVisible }}
-                        onPress={() => setMenuVisible((visible) => !visible)}
-                        style={styles.accountButton}
-                    >
-                        <View style={styles.menuIcon}>
-                            <View style={styles.menuIconLine} />
-                            <View style={styles.menuIconLine} />
-                            <View style={styles.menuIconLine} />
-                        </View>
-                    </Pressable>
-                    {menuVisible && (
-                        <View style={styles.menu}>
-                            {isLoggedIn ? (
-                                <>
-                                    <View style={styles.menuItem}>
-                                        <Text style={styles.menuItemText}>Моят профил</Text>
-                                    </View>
-                                    <View style={[styles.menuItem, styles.lastMenuItem]}>
-                                        <Text style={styles.menuItemText}>Изход</Text>
-                                    </View>
-                                </>
-                            ) : (
-                                <>
-                                    <Pressable
-                                        accessibilityRole="button"
-                                        onPress={() => {
-                                            setMenuVisible(false);
-                                            onLoginPress();
-                                        }}
-                                        style={styles.menuItem}
-                                    >
-                                        <Text style={styles.menuItemText}>Вход</Text>
-                                    </Pressable>
-                                    <Pressable
-                                        accessibilityRole="button"
-                                        onPress={() => {
-                                            setMenuVisible(false);
-                                            onRegistrationPress();
-                                        }}
-                                        style={[styles.menuItem, styles.lastMenuItem]}
-                                    >
-                                        <Text style={styles.menuItemText}>Регистрация</Text>
-                                    </Pressable>
-                                </>
-                            )}
-                        </View>
-                    )}
-                </View>}
             </View>
         </>
     );

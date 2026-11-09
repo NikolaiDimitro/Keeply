@@ -1,12 +1,17 @@
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { loggedInHomeStyles as styles } from '../styles/components';
+import items from '../temporaryData/data';
 
-export default function LoggedInHome({ items = [], onShowAll, onAddItem }) {
+export default function LoggedInHome() {
+
     const recentItems = items.slice(0, 3);
     const categories = Array.from(
         items.reduce((categoryMap, item) => {
+
             if (!item.category) {
+
                 return categoryMap;
+                
             }
 
             const category = categoryMap.get(item.category) || {
@@ -104,7 +109,6 @@ export default function LoggedInHome({ items = [], onShowAll, onAddItem }) {
                 <Text style={styles.sectionTitle}>Последно добавени</Text>
                 <Pressable
                     accessibilityRole="button"
-                    onPress={onShowAll}
                     hitSlop={8}
                 >
                     <Text style={styles.sectionHint}>Виж всички</Text>
@@ -119,7 +123,7 @@ export default function LoggedInHome({ items = [], onShowAll, onAddItem }) {
                             style={[
                                 styles.itemRow,
                                 index === recentItems.length - 1 &&
-                                    styles.lastItemRow,
+                                styles.lastItemRow,
                             ]}
                         >
                             <View
@@ -152,7 +156,6 @@ export default function LoggedInHome({ items = [], onShowAll, onAddItem }) {
 
             <Pressable
                 accessibilityRole="button"
-                onPress={onAddItem}
                 style={styles.addButton}
             >
                 <Text style={styles.addButtonText}>＋</Text>
