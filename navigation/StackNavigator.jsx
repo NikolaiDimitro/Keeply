@@ -1,4 +1,4 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import { useState } from "react";
 
 import HomeScreen from '../screens/home/HomeScreen';
@@ -9,11 +9,12 @@ import CreateScreen from '../screens/create/CreateScreen';
 import EditScreen from '../screens/items/EditScreen';
 import DetailsScreen from '../screens/items/DetailsScreen';
 
-let Stack = createNativeStackNavigator();
+
+let Stack = createStackNavigator();
 
 export default function StackNav() {
 
-    const [isAuthenticated, setAuthenticated] = useState(true);
+    const [isAuthenticated, setAuthenticated] = useState(false);
 
     return (
 

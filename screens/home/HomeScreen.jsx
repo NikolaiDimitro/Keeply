@@ -13,13 +13,21 @@ export default function HomeScreen({ isLoggedIn }) {
 
     return (
         <View style={styles.container}>
-            <AppHeaderComponent />
             {isLoggedIn ? (
-                <LoggedInHome />
+                <>
+                    <AppHeaderComponent />
+                    <LoggedInHome />
+                    <FooterComponent />
+                </>
             ) : (
-                <GuestHome />
+                <>
+                    <AppHeaderComponent />
+                    <GuestHome />
+                    <FooterComponent />
+                </>
+
             )}
-            <FooterComponent />
+
         </View>
     );
 }

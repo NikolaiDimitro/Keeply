@@ -6,8 +6,6 @@ import { appHeaderStyles as styles } from '../styles/components';
 export default function AppHeaderComponent({
     isLoggedIn,
     compact = false,
-    onLoginPress,
-    onRegistrationPress,
 }) {
     const [menuVisible, setMenuVisible] = useState(false);
 
@@ -47,7 +45,6 @@ export default function AppHeaderComponent({
                                             accessibilityRole="button"
                                             onPress={() => {
                                                 setMenuVisible(false);
-                                                onLoginPress();
                                             }}
                                             style={styles.menuItem}
                                         >
@@ -57,7 +54,6 @@ export default function AppHeaderComponent({
                                             accessibilityRole="button"
                                             onPress={() => {
                                                 setMenuVisible(false);
-                                                onRegistrationPress();
                                             }}
                                             style={[styles.menuItem, styles.lastMenuItem]}
                                         >
