@@ -47,3 +47,5 @@ const items = [
         color: '#E9FAF0',
     },
 ];
+
+export default items;

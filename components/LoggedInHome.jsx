@@ -1,9 +1,10 @@
 import { Pressable, ScrollView, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { loggedInHomeStyles as styles } from '../styles/components';
-import items from '../temporaryData/data';
+import items from '../temporaryData/data.js';
 
 export default function LoggedInHome() {
-
+    const insets = useSafeAreaInsets();
     const recentItems = items.slice(0, 3);
     const categories = Array.from(
         items.reduce((categoryMap, item) => {
@@ -29,7 +30,10 @@ export default function LoggedInHome() {
 
     return (
         <ScrollView
-            contentContainerStyle={styles.content}
+            contentContainerStyle={[
+                styles.content,
+                { paddingBottom: styles.content.paddingBottom + insets.bottom },
+            ]}
             showsVerticalScrollIndicator={false}
         >
             <View style={styles.greeting}>
@@ -164,4 +168,3 @@ export default function LoggedInHome() {
         </ScrollView>
     );
 }
-

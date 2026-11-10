@@ -38,6 +38,7 @@ export const appHeaderStyles = StyleSheet.create({
         height: 42,
         marginRight: 12,
         position: 'relative',
+        transform: [{ translateY: 6 }],
         zIndex: 2,
     },
     accountButton: {

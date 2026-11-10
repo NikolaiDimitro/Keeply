@@ -1,15 +1,14 @@
-import StackNav from "./StackNavigator";
-import InventoryScreen from "../screens/inventory/InventoryScreen";
-
-import { createNativeBottomTabNavigator } from "@react-navigation/bottom-tabs/unstable";
 import { useState } from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
+import InventoryNavigation from "./HomeNavigation";
+import HomeNavigation from "./HomeNavigation";
 
-let Tab = createNativeBottomTabNavigator();
+let Tab = createBottomTabNavigator();
 
 export default function NativeBottomNavigation() {
 
-    let [isuthenticated, setAuthenticated] = useState(true);
+    let [isuthenticated, setAuthenticated] = useState(false);
 
     return (
         <Tab.Navigator>
@@ -17,15 +16,15 @@ export default function NativeBottomNavigation() {
             {isuthenticated ?
                 <>
 
-                    < Tab.Screen name="Home" component={StackNav} initialParams={isuthenticated} />
-                    <Tab.Screen name="Inventory" component={InventoryScreen} />
-                    <Tab.Screen name="Details" component={StackNav} />
+                    <Tab.Screen name="Home" component={HomeNavigation} initialParams={isuthenticated} />
+                    <Tab.Screen name="Inventory" component={InventoryNavigation} />
+                    <Tab.Screen name="Details" component={InventoryNavigation} />
 
                 </>
                 :
                 <>
 
-                    < Tab.Screen name="Home" component={StackNav} initialParams={isuthenticated} />
+                    <Tab.Screen name="Home" component={HomeNavigation} initialParams={isuthenticated} />
                     <Tab.Screen name="Login" component={StackNav} />
                     <Tab.Screen name="Registration" component={StackNav} />
 

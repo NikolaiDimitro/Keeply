@@ -1,22 +1,21 @@
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native'
-import StackNav from './navigation/StackNavigator';
+import { NavigationContainer } from '@react-navigation/native';
+import { useState } from 'react';
+
 import AppHeaderComponent from './components/AppHeader';
-import FooterComponent from './components/Footer';
-import NativeBottomNavigation from './navigation/NativeBottomTabsNavigator';
+import HomeNavigation from './navigation/HomeNavigation';
+
 
 export default function App() {
 
+  const [isAuthenticated, setAuthenticated] = useState(false);
+
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <NavigationContainer>
-          <AppHeaderComponent/>
-          <NativeBottomNavigation />
-          <FooterComponent/>
+          <AppHeaderComponent />
+          < HomeNavigation isAuthenticated={isAuthenticated}/>
         </NavigationContainer >
       </SafeAreaProvider>
-    </GestureHandlerRootView>
   );
 }
