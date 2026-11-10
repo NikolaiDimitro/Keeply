@@ -1,69 +1,15 @@
-import { useState } from 'react';
-import { Image, Pressable, Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { appHeaderStyles as styles } from '../styles/components';
 
 export default function AppHeaderComponent({
-    isLoggedIn,
     compact = false,
 }) {
-    const [menuVisible, setMenuVisible] = useState(false);
-
     return (
         <>
             <StatusBar style="light" />
             <View style={[styles.headerContainer, compact && styles.compactHeader]}>
                 <View style={styles.brandRow}>
-                    {!compact && <View style={styles.accountRow}>
-                        <Pressable
-                            accessibilityLabel={isLoggedIn ? 'Отвори меню за профила' : 'Отвори меню за вход'}
-                            accessibilityRole="button"
-                            accessibilityState={{ expanded: menuVisible }}
-                            onPress={() => setMenuVisible((visible) => !visible)}
-                            style={styles.accountButton}
-                        >
-                            <View style={styles.menuIcon}>
-                                <View style={styles.menuIconLine} />
-                                <View style={styles.menuIconLine} />
-                                <View style={styles.menuIconLine} />
-                            </View>
-                        </Pressable>
-                        {menuVisible && (
-                            <View style={styles.menu}>
-                                {isLoggedIn ? (
-                                    <>
-                                        <View style={styles.menuItem}>
-                                            <Text style={styles.menuItemText}>Моят профил</Text>
-                                        </View>
-                                        <View style={[styles.menuItem, styles.lastMenuItem]}>
-                                            <Text style={styles.menuItemText}>Изход</Text>
-                                        </View>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Pressable
-                                            accessibilityRole="button"
-                                            onPress={() => {
-                                                setMenuVisible(false);
-                                            }}
-                                            style={styles.menuItem}
-                                        >
-                                            <Text style={styles.menuItemText}>Вход</Text>
-                                        </Pressable>
-                                        <Pressable
-                                            accessibilityRole="button"
-                                            onPress={() => {
-                                                setMenuVisible(false);
-                                            }}
-                                            style={[styles.menuItem, styles.lastMenuItem]}
-                                        >
-                                            <Text style={styles.menuItemText}>Регистрация</Text>
-                                        </Pressable>
-                                    </>
-                                )}
-                            </View>
-                        )}
-                    </View>}
                     <View style={styles.brandInfo}>
                         <View style={styles.brandMark}>
                             <Image

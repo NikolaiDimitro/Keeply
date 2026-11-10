@@ -3,18 +3,18 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useState } from 'react';
 
 import AppHeaderComponent from './components/AppHeader';
-import HomeNavigation from './navigation/HomeNavigation';
+import RootNavigation from './navigation/RootNavigation';
 
 
 export default function App() {
 
-  const [isAuthenticated, setAuthenticated] = useState(false);
+  const [isAuthenticated, setAuthenticated] = useState(true);
 
   return (
       <SafeAreaProvider>
         <NavigationContainer>
           <AppHeaderComponent />
-          < HomeNavigation isAuthenticated={isAuthenticated}/>
+          < RootNavigation isAuthenticated={isAuthenticated}/>
         </NavigationContainer >
       </SafeAreaProvider>
   );

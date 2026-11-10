@@ -1,26 +1,51 @@
-import { View } from 'react-native';
+import { Pressable, View, Text } from 'react-native';
 import { homeStyles as styles } from '../../styles/components.js';
 
 import GuestHome from '../../components/GuestHome.jsx';
 import LoggedInHome from '../../components/LoggedInHome.jsx';
 
-export default function HomeScreen({ route }) {
-
-    let isAuthenticated = route.params?.isAuthenticated ?? false;
+export default function HomeScreen({ navigation, isAuthenticated }) {
 
     return (
         <View style={styles.container}>
+
+            {isAuthenticated ? <LoggedInHome /> : <GuestHome />}
+
             {isAuthenticated ? (
                 <>
-                    <LoggedInHome />
+                    <Pressable
+                        accessibilityRole="button"
+                        onPress={() => navigation.navigate('MainTabs', { screen: 'Inventory' })}
+                    >
+                        <Text>Инвентар</Text>
+                    </Pressable>
+                    <Pressable
+                        accessibilityRole="button"
+                        onPress={() => navigation.navigate('MainTabs', { screen: 'Profil' })}
+                    >
+                        <Text>Профил</Text>
+                    </Pressable>
                 </>
             ) : (
                 <>
-                    <GuestHome />
+                    <Pressable
+                        accessibilityRole="button"
+                        onPress={() => navigation.navigate('Auth', { screen: 'Login' })}
+                    >
+                        <Text>Вход</Text>
+                    </Pressable>
+                    <Pressable
+                        accessibilityRole="button"
+                        onPress={() => navigation.navigate('Auth', { screen: 'Registration' })}
+                    >
+                        <Text>Регистрация</Text>
+                    </Pressable>
                 </>
-
             )}
 
         </View>
+
+
+
     );
 }
