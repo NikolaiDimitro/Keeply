@@ -1025,6 +1025,7 @@ export const confirmationDialogStyles = StyleSheet.create({
         textAlign: 'center',
     },
     actions: {
+        direction: 'ltr',
         flexDirection: 'row',
         gap: 10,
         marginTop: 22,

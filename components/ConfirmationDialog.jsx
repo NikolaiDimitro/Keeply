@@ -27,16 +27,6 @@ export default function ConfirmationDialog({
                     <View style={styles.actions}>
                         <Pressable
                             accessibilityRole="button"
-                            onPress={onCancel}
-                            style={({ pressed }) => [
-                                styles.cancelButton,
-                                pressed && styles.cancelButtonPressed,
-                            ]}
-                        >
-                            <Text style={styles.cancelButtonText}>Не</Text>
-                        </Pressable>
-                        <Pressable
-                            accessibilityRole="button"
                             onPress={onConfirm}
                             style={({ pressed }) => [
                                 styles.confirmButton,
@@ -44,6 +34,16 @@ export default function ConfirmationDialog({
                             ]}
                         >
                             <Text style={styles.confirmButtonText}>Да</Text>
+                        </Pressable>
+                        <Pressable
+                            accessibilityRole="button"
+                            onPress={onCancel}
+                            style={({ pressed }) => [
+                                styles.cancelButton,
+                                pressed && styles.cancelButtonPressed,
+                            ]}
+                        >
+                            <Text style={styles.cancelButtonText}>Не</Text>
                         </Pressable>
                     </View>
                 </View>
