@@ -23,7 +23,9 @@
     },
     "plugins": [
       "expo-status-bar",
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      "@react-native-vector-icons/entypo",
+      "expo-font"
     ]
   }
 }
