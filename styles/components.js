@@ -577,6 +577,42 @@ export const inventoryStyles = StyleSheet.create({
 });
 
 export const itemDetailsStyles = StyleSheet.create({
+    screen: {
+        flex: 1,
+    },
+    backButton: {
+        alignItems: 'center',
+        alignSelf: 'flex-start',
+        backgroundColor: '#E9FAF0',
+        borderColor: '#B9F2D0',
+        borderRadius: 22,
+        borderWidth: 1,
+        flexDirection: 'row',
+        marginHorizontal: 22,
+        marginTop: 10,
+        minHeight: 44,
+        paddingHorizontal: 14,
+        shadowColor: '#172B4D',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.06,
+        shadowRadius: 6,
+        elevation: 2,
+    },
+    backButtonPressed: {
+        backgroundColor: '#B9F2D0',
+        opacity: 0.85,
+    },
+    backIcon: {
+        color: '#172B4D',
+        fontSize: 24,
+        lineHeight: 26,
+        marginRight: 7,
+    },
+    backButtonText: {
+        color: '#172B4D',
+        fontSize: 14,
+        fontWeight: '600',
+    },
     content: {
         paddingHorizontal: 22,
         paddingTop: 4,
@@ -744,6 +780,45 @@ export const itemDetailsStyles = StyleSheet.create({
 });
 
 export const itemEditStyles = StyleSheet.create({
+    screen: {
+        flex: 1,
+    },
+    backButton: {
+        alignItems: 'center',
+        alignSelf: 'flex-start',
+        backgroundColor: '#E9FAF0',
+        borderColor: '#B9F2D0',
+        borderRadius: 22,
+        borderWidth: 1,
+        flexDirection: 'row',
+        marginHorizontal: 22,
+        marginTop: 10,
+        minHeight: 44,
+        paddingHorizontal: 14,
+        shadowColor: '#172B4D',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.06,
+        shadowRadius: 6,
+        elevation: 2,
+    },
+    backButtonPressed: {
+        backgroundColor: '#B9F2D0',
+        opacity: 0.85,
+    },
+    backIcon: {
+        color: '#172B4D',
+        fontSize: 24,
+        lineHeight: 26,
+        marginRight: 7,
+    },
+    backButtonText: {
+        color: '#172B4D',
+        fontSize: 14,
+        fontWeight: '600',
+    },
+    scrollView: {
+        flex: 1,
+    },
     content: {
         flexGrow: 1,
         justifyContent: 'center',

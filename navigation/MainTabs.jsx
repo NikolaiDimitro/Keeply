@@ -10,7 +10,7 @@ export function MainTabs() {
 
     return (
 
-        <Tab.Navigator>
+        <Tab.Navigator screenOptions={{ headerShown: false }}>
 
             <Tab.Screen name="Home" component={LoggedInHome} />
             <Tab.Screen name="Inventory" component={InventoryNavigation} />
