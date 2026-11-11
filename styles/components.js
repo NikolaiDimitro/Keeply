@@ -772,6 +772,10 @@ export const itemDetailsStyles = StyleSheet.create({
         justifyContent: 'center',
         minHeight: 50,
     },
+    deleteButtonPressed: {
+        backgroundColor: '#FEE2E2',
+        opacity: 0.85,
+    },
     deleteButtonText: {
         color: '#B42318',
         fontSize: 14,
@@ -960,6 +964,105 @@ export const itemEditStyles = StyleSheet.create({
         color: '#5474A5',
         fontSize: 14,
         fontWeight: '600',
+    },
+});
+
+export const confirmationDialogStyles = StyleSheet.create({
+    overlay: {
+        alignItems: 'center',
+        backgroundColor: 'rgba(23, 43, 77, 0.52)',
+        flex: 1,
+        justifyContent: 'center',
+        paddingHorizontal: 24,
+    },
+    card: {
+        alignItems: 'center',
+        backgroundColor: '#FFFFFF',
+        borderColor: '#E2E8F0',
+        borderRadius: 24,
+        borderWidth: 1,
+        elevation: 8,
+        maxWidth: 380,
+        padding: 24,
+        shadowColor: '#172B4D',
+        shadowOffset: { width: 0, height: 12 },
+        shadowOpacity: 0.2,
+        shadowRadius: 24,
+        width: '100%',
+    },
+    icon: {
+        alignItems: 'center',
+        backgroundColor: '#FEF2F2',
+        borderRadius: 28,
+        height: 56,
+        justifyContent: 'center',
+        marginBottom: 16,
+        width: 56,
+    },
+    iconText: {
+        color: '#B42318',
+        fontSize: 28,
+        fontWeight: '700',
+    },
+    title: {
+        color: '#172B4D',
+        fontSize: 20,
+        fontWeight: '700',
+        textAlign: 'center',
+    },
+    message: {
+        color: '#475569',
+        fontSize: 15,
+        lineHeight: 22,
+        marginTop: 10,
+        textAlign: 'center',
+    },
+    note: {
+        color: '#8290A5',
+        fontSize: 12,
+        lineHeight: 18,
+        marginTop: 12,
+        textAlign: 'center',
+    },
+    actions: {
+        flexDirection: 'row',
+        gap: 10,
+        marginTop: 22,
+        width: '100%',
+    },
+    cancelButton: {
+        alignItems: 'center',
+        backgroundColor: '#F8FAFC',
+        borderColor: '#CBD5E1',
+        borderRadius: 12,
+        borderWidth: 1,
+        flex: 1,
+        justifyContent: 'center',
+        minHeight: 48,
+    },
+    cancelButtonPressed: {
+        backgroundColor: '#E2E8F0',
+    },
+    cancelButtonText: {
+        color: '#475569',
+        fontSize: 14,
+        fontWeight: '700',
+    },
+    confirmButton: {
+        alignItems: 'center',
+        backgroundColor: '#B42318',
+        borderRadius: 12,
+        flex: 1,
+        justifyContent: 'center',
+        minHeight: 48,
+    },
+    confirmButtonPressed: {
+        backgroundColor: '#8F1D14',
+    },
+    confirmButtonText: {
+        color: '#FFFFFF',
+        fontSize: 14,
+        fontWeight: '700',
     },
 });
 

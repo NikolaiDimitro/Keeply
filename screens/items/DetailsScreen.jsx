@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
+import ConfirmationDialog from '../../components/ConfirmationDialog';
 import { itemDetailsStyles as styles } from '../../styles/components';
 
 function DetailRow({ label, value }) {
@@ -13,6 +15,7 @@ function DetailRow({ label, value }) {
 export default function DetailsScreen({ route, navigation }) {
     const { item } = route.params;
     const documents = item.documents || [];
+    const [isDeleteDialogVisible, setDeleteDialogVisible] = useState(false);
 
     return (
         <View style={styles.screen}>
@@ -100,11 +103,26 @@ export default function DetailsScreen({ route, navigation }) {
                     >
                         <Text style={styles.editButtonText}>Промени вещта</Text>
                     </Pressable>
-                    <View style={styles.deleteButton}>
+                    <Pressable
+                        accessibilityRole="button"
+                        onPress={() => setDeleteDialogVisible(true)}
+                        style={({ pressed }) => [
+                            styles.deleteButton,
+                            pressed && styles.deleteButtonPressed,
+                        ]}
+                    >
                         <Text style={styles.deleteButtonText}>Изтрий вещта</Text>
-                    </View>
+                    </Pressable>
                 </View>
             </ScrollView>
+            <ConfirmationDialog
+                visible={isDeleteDialogVisible}
+                title="Изтриване на вещ"
+                message={`Сигурни ли сте, че искате да изтриете „${item.name}“?`}
+                note="Потвърждението е само визуално — вещта няма да бъде премахната."
+                onCancel={() => setDeleteDialogVisible(false)}
+                onConfirm={() => setDeleteDialogVisible(false)}
+            />
         </View>
     );
 }
