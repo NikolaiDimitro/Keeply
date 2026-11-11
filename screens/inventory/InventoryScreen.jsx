@@ -37,7 +37,7 @@ export default function InventoryScreen({ navigation, onAddItem, onSelectItem })
         return (
             <Pressable
                 accessibilityRole="button"
-                onPress={() => onSelectItem?.(item)}
+                onPress={() => navigation.navigate('Details', { item })}
                 style={[
                     styles.itemRow,
                     index === filteredItems.length - 1 && styles.lastItemRow,

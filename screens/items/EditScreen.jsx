@@ -14,7 +14,9 @@ function EditField({ label, value, placeholder, multiline = false }) {
     );
 }
 
-export default function EditScreen({ item }) {
+export default function EditScreen({ route }) {
+    const { item } = route.params;
+
     return (
         <ScrollView
             contentContainerStyle={styles.content}

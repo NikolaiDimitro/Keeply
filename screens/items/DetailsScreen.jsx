@@ -10,7 +10,8 @@ function DetailRow({ label, value }) {
     );
 }
 
-export default function DetailsScreen({ item, onEdit }) {
+export default function DetailsScreen({ route, navigation }) {
+    const { item } = route.params;
     const documents = item.documents || [];
 
     return (
@@ -81,7 +82,7 @@ export default function DetailsScreen({ item, onEdit }) {
             <View style={styles.actions}>
                 <Pressable
                     accessibilityRole="button"
-                    onPress={onEdit}
+                    onPress={() => navigation.navigate('Edit', { item })}
                     style={styles.editButton}
                 >
                     <Text style={styles.editButtonText}>Промени вещта</Text>
