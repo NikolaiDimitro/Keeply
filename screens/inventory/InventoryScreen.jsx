@@ -2,14 +2,15 @@ import { useMemo, useState } from 'react';
 import {
     FlatList,
     Pressable,
-    
+
     Text,
     TextInput,
     View,
 } from 'react-native';
 import { inventoryStyles as styles } from '../../styles/components';
+import items from '../../temporaryData/data';
 
-export default function InventoryScreen({ items = [], onAddItem, onSelectItem }) {
+export default function InventoryScreen({ navigation, onAddItem, onSelectItem }) {
     const [search, setSearch] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Всички');
     const categories = useMemo(
@@ -125,7 +126,7 @@ export default function InventoryScreen({ items = [], onAddItem, onSelectItem })
                         {!items.length && (
                             <Pressable
                                 accessibilityRole="button"
-                                onPress={onAddItem}
+                                onPress={() => navigation.navigate('Create', { screen: 'Create' })}
                                 style={styles.addButton}
                             >
                                 <Text style={styles.addButtonText}>＋ Добави вещ</Text>

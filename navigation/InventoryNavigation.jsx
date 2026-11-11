@@ -14,7 +14,7 @@ export default function InventoryNavigation() {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
 
             <Stack.Screen name="InventorList" component={InventoryScreen} />
-            <Stack.Screen name="Details" component={DetailsScreen} />
+            <Stack.Screen name="Details" component={DetailsScreen}/>
             <Stack.Screen name="Create" component={CreateScreen} />
             <Stack.Screen name="Edit" component={EditScreen} />
 
