@@ -1,7 +1,7 @@
-import { ScrollView, Text, View, Image } from 'react-native';
+import { ScrollView, Text, View, Image,Pressable } from 'react-native';
 import { guestHomeStyles as styles } from '../styles/components';
 
-export default function GuestHome() {
+export default function GuestHome(navigation) {
     return (
         <ScrollView
             contentContainerStyle={styles.content}
@@ -38,6 +38,7 @@ export default function GuestHome() {
                     </Text>
                 </View>
             </View>
+
         </ScrollView>
     );
 }

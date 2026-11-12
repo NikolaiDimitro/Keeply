@@ -1,6 +1,5 @@
 import {
     KeyboardAvoidingView,
-    Keyboard,
     Platform,
     ScrollView,
     Text,
@@ -9,43 +8,54 @@ import {
     Pressable,
 } from 'react-native';
 import { registrationStyles as styles } from '../../styles/components';
+import { useState } from 'react';
 
-export default function RegistrationScreen({ onRegister, onNavigate }) {
+export default function RegistrationScreen({ onRegister }) {
     const [displayName, setDisplayName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
     const [validationMessage, setValidationMessage] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    function submitRegistration() {
+    async function submitRegistration() {
         if (password !== confirmedPassword) {
             setValidationMessage('Паролите не съвпадат.');
             return;
         }
 
-        if (password !== confirmPassword) {
-            setError('Паролите не съвпадат.');
+        if (typeof onRegister !== 'function') {
+            setValidationMessage('Регистрацията не е конфигурирана.');
             return;
         }
 
         setValidationMessage('');
-        onRegister({
-            displayName: displayName.trim(),
-            email: email.trim(),
-            password,
-        });
+        setIsSubmitting(true);
+
+        try {
+            await onRegister({
+                displayName: displayName.trim(),
+                email: email.trim(),
+                password,
+            });
+        } catch (error) {
+            setValidationMessage(
+                error instanceof Error ? error.message : 'Регистрацията не беше успешна.'
+            );
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
     return (
         <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' :  Platform.OS === 'android' ? 'height' : undefined}
+            behavior={Platform.OS === 'ios' ? 'padding' : Platform.OS === 'android' ? 'height' : undefined}
             style={styles.keyboardAvoidingView}
         >
             <ScrollView
                 contentContainerStyle={styles.scrollContent}
                 keyboardDismissMode="on-drag"
                 keyboardShouldPersistTaps="handled"
-                ref={scrollViewRef}
             >
                 <View style={styles.card}>
                     <Text style={styles.title}>Създай профил</Text>
@@ -64,8 +74,8 @@ export default function RegistrationScreen({ onRegister, onNavigate }) {
                         returnKeyType="next"
                         style={styles.input}
                         textContentType="name"
-                        value={name}
-                        onChangeText={(value) => updateField(setName, value)}
+                        value={displayName}
+                        onChangeText={setDisplayName}
                     />
 
                     <Text style={styles.label}>Имейл</Text>
@@ -81,7 +91,7 @@ export default function RegistrationScreen({ onRegister, onNavigate }) {
                         style={styles.input}
                         textContentType="emailAddress"
                         value={email}
-                        onChangeText={(value) => updateField(setEmail, value)}
+                        onChangeText={setEmail}
                     />
 
                     <Text style={styles.label}>Парола</Text>
@@ -95,7 +105,7 @@ export default function RegistrationScreen({ onRegister, onNavigate }) {
                         style={styles.input}
                         textContentType="newPassword"
                         value={password}
-                        onChangeText={(value) => updateField(setPassword, value)}
+                        onChangeText={setPassword}
                     />
 
                     <Text style={styles.label}>Потвърди паролата</Text>
@@ -109,6 +119,7 @@ export default function RegistrationScreen({ onRegister, onNavigate }) {
                         style={styles.input}
                         textContentType="newPassword"
                         value={confirmedPassword}
+                        onChangeText={setConfirmedPassword}
                     />
 
                     {validationMessage ? (
@@ -119,7 +130,7 @@ export default function RegistrationScreen({ onRegister, onNavigate }) {
                         accessibilityRole="button"
                         accessibilityState={{ disabled: isSubmitting }}
                         disabled={isSubmitting}
-                        onPress={handleRegistration}
+                        onPress={submitRegistration}
                         style={[styles.button, isSubmitting && styles.buttonDisabled]}
                     >
                         <Text style={styles.buttonText}>

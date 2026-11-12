@@ -8,7 +8,7 @@ import RootNavigation from './navigation/RootNavigation';
 
 export default function App() {
 
-  const [isAuthenticated, setAuthenticated] = useState(true);
+  const [isAuthenticated, setAuthenticated] = useState(false);
 
   return (
       <SafeAreaProvider>

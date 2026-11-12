@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844" fill="none">
+  <rect width="390" height="844" rx="36" fill="#F6F8F6"/>
+  <rect x="0.5" y="0.5" width="389" height="843" rx="35.5" stroke="#E4EAE5"/>
+
+  <circle cx="345" cy="92" r="96" fill="#E8F2EC"/>
+  <circle cx="35" cy="700" r="92" fill="#EAF3EE"/>
+
+  <rect x="28" y="58" width="48" height="48" rx="16" fill="#258458"/>
+  <path d="M43 72h18v20H43z" stroke="white" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M47 77h10M47 82h10M47 87h7" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  <text x="88" y="79" fill="#17261E" font-family="Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="1.5">ТВОЯТ ЛИЧЕН ИНВЕНТАР</text>
+  <text x="88" y="101" fill="#17261E" font-family="Arial, sans-serif" font-size="24" font-weight="700">Keeply</text>
+
+  <text x="28" y="188" fill="#17261E" font-family="Arial, sans-serif" font-size="30" font-weight="700">Добре дошъл!</text>
+  <text x="28" y="218" fill="#64736A" font-family="Arial, sans-serif" font-size="15">Влез в профила си, за да продължиш.</text>
+
+  <rect x="28" y="250" width="334" height="56" rx="16" fill="#E9EEEA"/>
+  <rect x="32" y="254" width="162" height="48" rx="13" fill="white"/>
+  <text x="113" y="284" text-anchor="middle" fill="#258458" font-family="Arial, sans-serif" font-size="15" font-weight="700">Вход</text>
+  <text x="278" y="284" text-anchor="middle" fill="#64736A" font-family="Arial, sans-serif" font-size="15" font-weight="600">Регистрация</text>
+
+  <text x="30" y="350" fill="#26372D" font-family="Arial, sans-serif" font-size="14" font-weight="600">Имейл</text>
+  <rect x="28" y="364" width="334" height="56" rx="14" fill="white" stroke="#DCE5DE"/>
+  <text x="48" y="398" fill="#98A49C" font-family="Arial, sans-serif" font-size="15">name@example.com</text>
+
+  <text x="30" y="460" fill="#26372D" font-family="Arial, sans-serif" font-size="14" font-weight="600">Парола</text>
+  <rect x="28" y="474" width="334" height="56" rx="14" fill="white" stroke="#DCE5DE"/>
+  <text x="48" y="508" fill="#98A49C" font-family="Arial, sans-serif" font-size="15">Въведи паролата си</text>
+  <path d="M319 496c5-7 11-10 17-10s12 3 17 10c-5 7-11 10-17 10s-12-3-17-10Z" stroke="#829087" stroke-width="1.8"/>
+  <circle cx="336" cy="496" r="3" stroke="#829087" stroke-width="1.8"/>
+
+  <text x="362" y="558" text-anchor="end" fill="#258458" font-family="Arial, sans-serif" font-size="13" font-weight="600">Забравена парола?</text>
+
+  <rect x="28" y="584" width="334" height="56" rx="16" fill="#258458"/>
+  <text x="195" y="619" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="700">Вход</text>
+
+  <path d="M28 692h334" stroke="#E1E8E2"/>
+  <text x="195" y="730" text-anchor="middle" fill="#64736A" font-family="Arial, sans-serif" font-size="14">Нямаш профил?</text>
+  <text x="195" y="757" text-anchor="middle" fill="#258458" font-family="Arial, sans-serif" font-size="15" font-weight="700">Създай регистрация</text>
+</svg>

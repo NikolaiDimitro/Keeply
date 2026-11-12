@@ -1,20 +1,40 @@
-import { createStackNavigator } from "@react-navigation/stack";
-
 import LoginScreen from "../screens/auth/LoginScreen";
 import RegistrationScreen from "../screens/auth/RegistrationSrcreen";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import HomeScreen from "../screens/home/HomeScreen";
 
-let Stack = createStackNavigator();
+let Tab = createBottomTabNavigator();
 
 export function AuthenticationNavigation() {
 
     return (
 
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Tab.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+                headerShown: false,
+                tabBarActiveTintColor: "#258458",
+                tabBarInactiveTintColor: "#8290A5",
+            }}
+        >
 
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Registration" component={RegistrationScreen} />
+            <Tab.Screen
+                name="Home"
+                component={HomeScreen}
+                options={{ tabBarLabel: "Начало" }}
+            />
+            <Tab.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{ tabBarLabel: "Вход" }}
+            />
+            <Tab.Screen
+                name="Registration"
+                component={RegistrationScreen}
+                options={{ tabBarLabel: "Регистрация" }}
+            />
 
-        </Stack.Navigator>
+        </Tab.Navigator>
 
     )
 };
