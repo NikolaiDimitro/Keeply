@@ -1,21 +1,21 @@
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
-import { useState } from 'react';
 
 import AppHeaderComponent from './components/AppHeader';
 import RootNavigation from './navigation/RootNavigation';
+import Providers from './providers/authProveders'
 
 
 export default function App() {
 
-  const [isAuthenticated, setAuthenticated] = useState(false);
-
   return (
-      <SafeAreaProvider>
+    <SafeAreaProvider>
+      <Providers.AuthenticatedProvider>
         <NavigationContainer>
           <AppHeaderComponent />
-          < RootNavigation isAuthenticated={isAuthenticated}/>
+          < RootNavigation  />
         </NavigationContainer >
-      </SafeAreaProvider>
+      </ Providers.AuthenticatedProvider>
+    </SafeAreaProvider>
   );
 }

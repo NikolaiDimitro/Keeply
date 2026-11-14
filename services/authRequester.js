@@ -1,10 +1,27 @@
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../config/firebase';
+import firebase from 'firebase/compat/app';
 
-export async function registerUser(name, email, password) {
 
-    const registry = await createUserWithEmailAndPassword(auth, email, password);
-    await updateProfile(registry.user, { displayName: name });
-    return registry;
-    
+export async function registration(name, email, password) {
+
+
+
+    let userRegistration = await firebase.auth().createUserWithEmailAndPassword(email, password);
+
+
+    try {
+
+        if (userRegistration.user) {
+
+            setAuthenticated(true);
+
+        }
+
+    } catch {
+
+
+
+    }
+
 }
