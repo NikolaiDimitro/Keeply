@@ -9,13 +9,20 @@ import {
 } from 'react-native';
 import { registrationStyles as styles } from '../../styles/components';
 import { useState } from 'react';
-import { registration } from '../../services/authRequester';
+import requestApi from '../../services/authRequester.js'
 
 const registrationErrorMessages = {
     'auth/email-already-in-use': 'Този имейл вече е регистриран.',
     'auth/invalid-email': 'Имейлът не е валиден.',
     'auth/weak-password': 'Паролата е твърде слаба.',
     'auth/network-request-failed': 'Проблем с интернет връзката. Опитай отново.',
+}
+
+function getRegistrationErrorMessage(error) {
+
+    let code = error && typeof error === 'object' ? error.code : undefined;
+
+    return registrationErrorMessages[code] ?? 'Регистрацията не беше успешна. Моля, опитайте отново.';
 }
 
 export default function RegistrationScreen() {
@@ -72,7 +79,7 @@ export default function RegistrationScreen() {
 
         try {
 
-            await registration({
+            await requestApi.registration({
 
                 displayName: displayName.trim(),
                 email: normalizedEmail,
@@ -89,14 +96,6 @@ export default function RegistrationScreen() {
             setIsSubmitting(false);
 
         }
-    }
-
-    function getRegistrationErrorMessage(error) {
-
-        let code = error && typeof error === 'object' ? error.code : undefined;
-
-        return registrationErrorMessages[code]
-            ?? 'Регистрацията не беше успешна. Опитай отново.';
     }
 
     return (

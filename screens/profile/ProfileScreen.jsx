@@ -1,9 +1,25 @@
-import { ScrollView, Text, View } from 'react-native';
+import { useState } from 'react';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { profileStyles as styles } from '../../styles/components';
+import requestApi from '../../services/authRequester';
 
 export default function ProfileScreen({ user }) {
+    const [isSigningOut, setIsSigningOut] = useState(false);
+    const [signOutError, setSignOutError] = useState('');
     const displayName = user?.displayName || 'Иван Иванов';
     const email = user?.email || 'ivan@example.com';
+
+    async function handleSignOut() {
+        setSignOutError('');
+        setIsSigningOut(true);
+
+        try {
+            await requestApi.logout();
+        } catch {
+            setSignOutError('Неуспешен изход от профила. Опитайте отново.');
+            setIsSigningOut(false);
+        }
+    }
 
     return (
         <ScrollView
@@ -40,9 +56,25 @@ export default function ProfileScreen({ user }) {
                 </View>
             </View>
 
-            <View style={styles.signOutButton}>
-                <Text style={styles.signOutText}>Изход от профила</Text>
-            </View>
+            <Pressable
+                accessibilityRole="button"
+                accessibilityState={{ disabled: isSigningOut }}
+                disabled={isSigningOut}
+                onPress={handleSignOut}
+                style={({ pressed }) => [
+                    styles.signOutButton,
+                    pressed && styles.signOutButtonPressed,
+                ]}
+            >
+                <Text style={styles.signOutText}>
+                    {isSigningOut ? 'Излизане...' : 'Излез от профил'}
+                </Text>
+            </Pressable>
+            {signOutError ? (
+                <Text style={{ color: '#B91C1C', textAlign: 'center' }}>
+                    {signOutError}
+                </Text>
+            ) : null}
         </ScrollView>
     );
 }

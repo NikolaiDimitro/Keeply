@@ -1356,10 +1356,18 @@ export const loginStyles = StyleSheet.create({
         minHeight: 52,
         marginTop: 4,
     },
+    buttonDisabled: {
+        opacity: 0.6,
+    },
     buttonText: {
         color: '#172B4D',
         fontSize: 16,
         fontWeight: '700',
+    },
+    validationMessage: {
+        color: '#B42318',
+        fontSize: 13,
+        marginBottom: 12,
     },
 });
 
@@ -1443,15 +1451,19 @@ export const profileStyles = StyleSheet.create({
     },
     signOutButton: {
         alignItems: 'center',
-        borderColor: '#E2E8F0',
-        borderRadius: 12,
+        backgroundColor: '#FFF5F5',
+        borderColor: '#FECACA',
+        borderRadius: 14,
         borderWidth: 1,
         justifyContent: 'center',
-        marginTop: 4,
-        minHeight: 48,
+        marginTop: 8,
+        minHeight: 52,
+    },
+    signOutButtonPressed: {
+        opacity: 0.72,
     },
     signOutText: {
-        color: '#172B4D',
+        color: '#B42318',
         fontSize: 14,
         fontWeight: '600',
     },
