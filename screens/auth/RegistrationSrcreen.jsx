@@ -9,8 +9,17 @@ import {
 } from 'react-native';
 import { registrationStyles as styles } from '../../styles/components';
 import { useState } from 'react';
+import { registration } from '../../services/authRequester';
 
-export default function RegistrationScreen({ onRegister }) {
+const registrationErrorMessages = {
+    'auth/email-already-in-use': 'Този имейл вече е регистриран.',
+    'auth/invalid-email': 'Имейлът не е валиден.',
+    'auth/weak-password': 'Паролата е твърде слаба.',
+    'auth/network-request-failed': 'Проблем с интернет връзката. Опитай отново.',
+}
+
+export default function RegistrationScreen() {
+
     const [displayName, setDisplayName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -19,32 +28,75 @@ export default function RegistrationScreen({ onRegister }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     async function submitRegistration() {
-        if (password !== confirmedPassword) {
-            setValidationMessage('Паролите не съвпадат.');
+
+        let name = displayName.trim();
+        let normalizedEmail = email.trim();
+
+        if (!name) {
+
+            setValidationMessage('Името е задължително');
             return;
+
         }
 
-        if (typeof onRegister !== 'function') {
-            setValidationMessage('Регистрацията не е конфигурирана.');
+        if (name.length < 6) {
+
+            setValidationMessage('Името трябва да съдържа поне 6 символа');
             return;
+
+        }
+
+        if (!normalizedEmail) {
+
+            setValidationMessage('Имейлът е задължителен');
+            return;
+
+        }
+
+        if (password !== confirmedPassword) {
+
+            setValidationMessage('Паролите не съвпадат.');
+            return;
+
+        }
+
+        if (password.length < 6) {
+
+            setValidationMessage('Паролата трябва да бъде поне 6 символа');
+            return;
+
         }
 
         setValidationMessage('');
         setIsSubmitting(true);
 
         try {
-            await onRegister({
+
+            await registration({
+
                 displayName: displayName.trim(),
-                email: email.trim(),
+                email: normalizedEmail,
                 password,
+
             });
+
         } catch (error) {
-            setValidationMessage(
-                error instanceof Error ? error.message : 'Регистрацията не беше успешна.'
-            );
+
+            setValidationMessage(getRegistrationErrorMessage(error));
+
         } finally {
+
             setIsSubmitting(false);
+
         }
+    }
+
+    function getRegistrationErrorMessage(error) {
+
+        let code = error && typeof error === 'object' ? error.code : undefined;
+
+        return registrationErrorMessages[code]
+            ?? 'Регистрацията не беше успешна. Опитай отново.';
     }
 
     return (
