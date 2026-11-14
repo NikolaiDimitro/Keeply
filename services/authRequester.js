@@ -23,11 +23,23 @@ async function logout() {
 
 }
 
+async function changingName(displayName) {
+    const currentUser = auth.currentUser;
+
+    if (!currentUser) {
+        throw new Error('Няма влязъл потребител.');
+    }
+
+    await updateProfile(currentUser, { displayName });
+
+}
+
 let requestApi = {
 
     registration,
     login,
-    logout
+    logout,
+    changingName
 
 }
 export default requestApi;

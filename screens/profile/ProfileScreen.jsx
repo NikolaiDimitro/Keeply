@@ -1,23 +1,66 @@
-import { useState } from 'react';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { useContext, useState } from 'react';
+import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { profileStyles as styles } from '../../styles/components';
+import { AuthenticatedContext } from '../../providers/authProveders';
 import requestApi from '../../services/authRequester';
 
-export default function ProfileScreen({ user }) {
+export default function ProfileScreen() {
+
     const [isSigningOut, setIsSigningOut] = useState(false);
     const [signOutError, setSignOutError] = useState('');
-    const displayName = user?.displayName || 'Иван Иванов';
-    const email = user?.email || 'ivan@example.com';
+    const [isChangeName, setChangeName] = useState(false);
+    const [editedName, setEditedName] = useState('');
+    const [updatedDisplayName, setUpdatedDisplayName] = useState(null);
+    const [isSavingName, setIsSavingName] = useState(false);
+    const [nameError, setNameError] = useState('');
+
+    const { user } = useContext(AuthenticatedContext);
+
+    const displayName = updatedDisplayName ?? user?.displayName ?? 'Unknown';
+    const email = user?.email || 'Unknown';
 
     async function handleSignOut() {
+
         setSignOutError('');
         setIsSigningOut(true);
 
         try {
+
             await requestApi.logout();
+
         } catch {
+
             setSignOutError('Неуспешен изход от профила. Опитайте отново.');
             setIsSigningOut(false);
+
+        }
+    }
+
+    function changeName() {
+        setEditedName(user?.displayName ?? '');
+        setNameError('');
+        setChangeName(true);
+    }
+
+    async function isChangingNameHandler() {
+        const nextName = editedName.trim();
+
+        if (!nextName) {
+            setNameError('Името е задължително.');
+            return;
+        }
+
+        setNameError('');
+        setIsSavingName(true);
+
+        try {
+            await requestApi.changingName(nextName);
+            setUpdatedDisplayName(nextName);
+            setChangeName(false);
+        } catch {
+            setNameError('Името не можа да бъде променено. Опитайте отново.');
+        } finally {
+            setIsSavingName(false);
         }
     }
 
@@ -37,14 +80,50 @@ export default function ProfileScreen({ user }) {
             </View>
 
             <View style={styles.section}>
-                <View style={styles.sectionCopy}>
-                    <Text style={styles.sectionTitle}>Име</Text>
-                    <Text style={styles.sectionValue}>{displayName}</Text>
-                </View>
-                <View style={styles.secondaryButton}>
-                    <Text style={styles.secondaryButtonText}>Промени</Text>
-                </View>
+                {isChangeName ?
+
+                    <View style={styles.sectionCopy}>
+                        <Text style={styles.sectionTitle}>Име</Text>
+                        <TextInput
+                            accessibilityLabel="Ново име"
+                            autoCapitalize="words"
+                            onChangeText={setEditedName}
+                            placeholder="Име"
+                            style={styles.sectionValue}
+                            value={editedName}
+                        />
+                    </View>
+
+                    :
+
+                    <View style={styles.sectionCopy}>
+                        <Text style={styles.sectionTitle}>Име</Text>
+                        <Text style={styles.sectionValue}>{displayName}</Text>
+                    </View>
+
+                }
+                {isChangeName ?
+
+                    <Pressable
+                        accessibilityRole="button"
+                        accessibilityState={{ disabled: isSavingName }}
+                        disabled={isSavingName}
+                        style={styles.secondaryButton}
+                        onPress={isChangingNameHandler}
+                    >
+                        <Text style={styles.secondaryButtonText}>
+                            {isSavingName ? 'Запазване...' : 'Запази'}
+                        </Text>
+                    </Pressable>
+                    :
+                    <Pressable style={styles.secondaryButton} onPress={changeName}>
+                        <Text style={styles.secondaryButtonText}>Промени</Text>
+                    </Pressable>
+                }
             </View>
+            {nameError ? (
+                <Text style={styles.profileError}>{nameError}</Text>
+            ) : null}
 
             <View style={styles.section}>
                 <View style={styles.sectionCopy}>

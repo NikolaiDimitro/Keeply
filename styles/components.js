@@ -1435,6 +1435,11 @@ export const profileStyles = StyleSheet.create({
         fontSize: 14,
         marginTop: 5,
     },
+    profileError: {
+        color: '#B42318',
+        fontSize: 13,
+        marginBottom: 12,
+    },
     secondaryButton: {
         alignItems: 'center',
         borderColor: '#E2E8F0',
