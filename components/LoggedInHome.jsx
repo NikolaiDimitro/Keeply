@@ -1,10 +1,18 @@
+import { useContext } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AuthenticatedContext } from '../providers/authProveders';
 import { loggedInHomeStyles as styles } from '../styles/components';
 import items from '../temporaryData/data.js';
 
 export default function LoggedInHome() {
+
     const insets = useSafeAreaInsets();
+    const { user } = useContext(AuthenticatedContext);
+
+    const userLabel = user?.displayName?.trim() || user?.email?.trim() || '?';
+    const avatarInitial = userLabel.charAt(0).toLocaleUpperCase('bg-BG');
+    
     const recentItems = items.slice(0, 3);
     const categories = Array.from(
         items.reduce((categoryMap, item) => {
@@ -45,7 +53,7 @@ export default function LoggedInHome() {
                     </Text>
                 </View>
                 <View style={styles.avatar}>
-                    <Text style={styles.avatarText}>К</Text>
+                    <Text style={styles.avatarText}>{avatarInitial}</Text>
                 </View>
             </View>
 

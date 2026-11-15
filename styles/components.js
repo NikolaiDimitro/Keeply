@@ -1372,6 +1372,12 @@ export const loginStyles = StyleSheet.create({
 });
 
 export const profileStyles = StyleSheet.create({
+    keyboardAvoidingView: {
+        flex: 1,
+    },
+    scrollView: {
+        flex: 1,
+    },
     content: {
         flexGrow: 1,
         paddingHorizontal: 22,
@@ -1439,6 +1445,59 @@ export const profileStyles = StyleSheet.create({
         color: '#B42318',
         fontSize: 13,
         marginBottom: 12,
+    },
+    passwordSuccessMessage: {
+        color: '#15803D',
+        fontSize: 13,
+        marginBottom: 12,
+        textAlign: 'center',
+    },
+    passwordSection: {
+        alignItems: 'stretch',
+        flexDirection: 'column',
+    },
+    passwordForm: {
+        width: '100%',
+    },
+    passwordField: {
+        marginTop: 14,
+    },
+    passwordLabel: {
+        color: '#475569',
+        fontSize: 13,
+        fontWeight: '600',
+        marginBottom: 6,
+    },
+    passwordInput: {
+        backgroundColor: '#F8FAFC',
+        borderColor: '#E2E8F0',
+        borderRadius: 10,
+        borderWidth: 1,
+        color: '#172B4D',
+        fontSize: 15,
+        minHeight: 48,
+        paddingHorizontal: 12,
+    },
+    passwordConfirmButton: {
+        alignItems: 'center',
+        backgroundColor: '#172B4D',
+        borderRadius: 12,
+        justifyContent: 'center',
+        marginTop: 18,
+        minHeight: 48,
+        paddingHorizontal: 16,
+    },
+    passwordConfirmButtonText: {
+        color: '#FFFFFF',
+        fontSize: 14,
+        fontWeight: '700',
+    },
+    passwordToggleButton: {
+        backgroundColor: '#FFFFFF',
+        borderColor: '#BFDBFE',
+        flexShrink: 0,
+        marginLeft: 12,
+        minWidth: 136,
     },
     secondaryButton: {
         alignItems: 'center',

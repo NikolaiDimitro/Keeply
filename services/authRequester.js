@@ -1,4 +1,12 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
+import {
+    createUserWithEmailAndPassword,
+    EmailAuthProvider,
+    reauthenticateWithCredential,
+    signInWithEmailAndPassword,
+    signOut,
+    updatePassword,
+    updateProfile,
+} from 'firebase/auth';
 import { auth } from '../config/firebase';
 
 async function registration({ displayName, email, password }) {
@@ -34,12 +42,23 @@ async function changingName(displayName) {
 
 }
 
+async function changingPassword({ user, currentPassword, password }) {
+    if (!user?.email) {
+        throw new Error('Няма влязъл потребител с имейл.');
+    }
+
+    const credential = EmailAuthProvider.credential(user.email, currentPassword);
+    await reauthenticateWithCredential(user, credential);
+    await updatePassword(user, password);
+}
+
 let requestApi = {
 
     registration,
     login,
     logout,
-    changingName
+    changingName,
+    changingPassword
 
 }
 export default requestApi;
