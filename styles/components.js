@@ -1301,6 +1301,12 @@ export const loginStyles = StyleSheet.create({
     keyboardAvoidingView: {
         flex: 1,
     },
+    screenContent: {
+        flex: 1,
+    },
+    scrollView: {
+        flex: 1,
+    },
     scrollContent: {
         flexGrow: 1,
         justifyContent: 'center',
@@ -1355,6 +1361,14 @@ export const loginStyles = StyleSheet.create({
         justifyContent: 'center',
         minHeight: 52,
         marginTop: 4,
+    },
+    buttonFooter: {
+        alignSelf: 'center',
+        maxWidth: 440,
+        paddingBottom: 16,
+        paddingHorizontal: 24,
+        paddingTop: 8,
+        width: '100%',
     },
     buttonDisabled: {
         opacity: 0.6,

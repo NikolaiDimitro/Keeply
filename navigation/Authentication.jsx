@@ -17,6 +17,7 @@ export function AuthenticationNavigation() {
                 headerShown: false,
                 tabBarActiveTintColor: "#258458",
                 tabBarInactiveTintColor: "#8290A5",
+                tabBarHideOnKeyboard: true,
             }}
         >
 

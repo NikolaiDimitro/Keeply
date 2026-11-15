@@ -75,54 +75,64 @@ export default function LoginScreen() {
 
     return (
         <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            behavior={
+                Platform.OS === 'ios'
+                    ? 'padding'
+                    : Platform.OS === 'android'
+                        ? 'height'
+                        : undefined
+            }
             style={styles.keyboardAvoidingView}
         >
-            <ScrollView
-                contentContainerStyle={styles.scrollContent}
-                keyboardDismissMode="on-drag"
-                keyboardShouldPersistTaps="handled"
-            >
-                <View style={styles.card}>
-                    <Text style={styles.title}>Добре дошъл!</Text>
-                    <Text style={styles.subtitle}>
-                        Влез в профила си, за да продължиш.
-                    </Text>
+            <View style={styles.screenContent}>
+                <ScrollView
+                    contentContainerStyle={styles.scrollContent}
+                    keyboardDismissMode="on-drag"
+                    keyboardShouldPersistTaps="handled"
+                    style={styles.scrollView}
+                >
+                    <View style={styles.card}>
+                        <Text style={styles.title}>Добре дошъл!</Text>
+                        <Text style={styles.subtitle}>
+                            Влез в профила си, за да продължиш.
+                        </Text>
 
-                    <Text style={styles.label}>Имейл</Text>
-                    <TextInput
-                        accessibilityLabel="Имейл"
-                        autoCapitalize="none"
-                        autoComplete="email"
-                        autoCorrect={false}
-                        keyboardType="email-address"
-                        onChangeText={setEmail}
-                        placeholder="name@example.com"
-                        placeholderTextColor="#8290A5"
-                        returnKeyType="next"
-                        style={styles.input}
-                        textContentType="emailAddress"
-                        value={email}
-                    />
+                        <Text style={styles.label}>Имейл</Text>
+                        <TextInput
+                            accessibilityLabel="Имейл"
+                            autoCapitalize="none"
+                            autoComplete="email"
+                            autoCorrect={false}
+                            keyboardType="email-address"
+                            onChangeText={setEmail}
+                            placeholder="name@example.com"
+                            placeholderTextColor="#8290A5"
+                            returnKeyType="next"
+                            style={styles.input}
+                            textContentType="emailAddress"
+                            value={email}
+                        />
 
-                    <Text style={styles.label}>Парола</Text>
-                    <TextInput
-                        accessibilityLabel="Парола"
-                        autoComplete="current-password"
-                        onChangeText={setPassword}
-                        placeholder="Въведи паролата си"
-                        placeholderTextColor="#8290A5"
-                        returnKeyType="done"
-                        secureTextEntry
-                        style={styles.input}
-                        textContentType="password"
-                        value={password}
-                    />
+                        <Text style={styles.label}>Парола</Text>
+                        <TextInput
+                            accessibilityLabel="Парола"
+                            autoComplete="current-password"
+                            onChangeText={setPassword}
+                            placeholder="Въведи паролата си"
+                            placeholderTextColor="#8290A5"
+                            returnKeyType="done"
+                            secureTextEntry
+                            style={styles.input}
+                            textContentType="password"
+                            value={password}
+                        />
 
-                    {validMessage ? (
-                        <Text style={styles.validationMessage}>{validMessage}</Text>
-                    ) : null}
-
+                        {validMessage ? (
+                            <Text style={styles.validationMessage}>{validMessage}</Text>
+                        ) : null}
+                    </View>
+                </ScrollView>
+                <View style={styles.buttonFooter}>
                     <Pressable
                         accessibilityRole="button"
                         accessibilityState={{ disabled: isSubmitting }}
@@ -135,7 +145,7 @@ export default function LoginScreen() {
                         </Text>
                     </Pressable>
                 </View>
-            </ScrollView>
+            </View>
         </KeyboardAvoidingView>
     );
 }
