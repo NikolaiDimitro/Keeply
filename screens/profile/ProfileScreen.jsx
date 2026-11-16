@@ -34,6 +34,7 @@ export default function ProfileScreen() {
     const [updatedDisplayName, setUpdatedDisplayName] = useState(null);
     const [isSavingName, setIsSavingName] = useState(false);
     const [nameError, setNameError] = useState('');
+    const [nameSuccessMessage, setNameSuccessMessage] = useState('');
 
     const [isChangingPassword, setIsChangingPassword] = useState(false);
     const [isOldPassword, setOldPasswor] = useState('');
@@ -69,6 +70,7 @@ export default function ProfileScreen() {
     function changeName() {
         setEditedName(user?.displayName ?? '');
         setNameError('');
+        setNameSuccessMessage('');
         setChangeName(true);
     }
 
@@ -83,7 +85,16 @@ export default function ProfileScreen() {
 
         if (!nextName) {
             setNameError('Името е задължително.');
+            setTimeout(() => setNameError(''), 3000);
             return;
+        }
+
+        if (nextName.length < 6) {
+
+            setNameError('Името трябва да бъде дълго поне 6 символа.');
+            setTimeout(() => setNameError(''), 3000);
+            return;
+
         }
 
         setNameError('');
@@ -93,8 +104,11 @@ export default function ProfileScreen() {
             await requestApi.changingName(nextName);
             setUpdatedDisplayName(nextName);
             setChangeName(false);
+            setNameSuccessMessage('Името беше променено успешно.');
+            setTimeout(() => setNameSuccessMessage(''), 3000);
         } catch {
             setNameError('Името не можа да бъде променено. Опитайте отново.');
+            setTimeout(() => setNameError(''), 3000);
         } finally {
             setIsSavingName(false);
         }
@@ -126,26 +140,40 @@ export default function ProfileScreen() {
 
         if (!isOldPassword) {
             setPasswordError('Въведи текущата парола.');
+            setTimeout(() => setPasswordError(''), 3000);
             return;
         }
 
         if (isOldPassword !== isOldConfirmedPassword) {
             setPasswordError('Въведените текущи пароли не съвпадат.');
+            setTimeout(() => setPasswordError(''), 3000);
             return;
         }
 
         if (isNewPassword.length < 6) {
             setPasswordError('Новата парола трябва да бъде поне 6 символа.');
+            setTimeout(() => setPasswordError(''), 3000);
             return;
         }
 
         if (isNewPassword !== isNewConfirmedPassword) {
             setPasswordError('Новите пароли не съвпадат.');
+            setTimeout(() => setPasswordError(''), 3000);
             return;
         }
 
+        if (isOldPassword === isNewPassword) {
+
+            setPasswordError('Старата и новата парола трябва да бъдат различни!');
+            setTimeout(() => setPasswordError(''), 3000);
+            return;
+
+        }
+
+
         if (!user) {
             setPasswordError('Няма влязъл потребител.');
+            setTimeout(() => setPasswordError(''), 3000);
             return;
         }
 
@@ -161,12 +189,15 @@ export default function ProfileScreen() {
             clearPasswordFields();
             setIsChangingPassword(false);
             setPasswordSuccessMessage('Паролата беше сменена успешно.');
+            setTimeout(() => setPasswordSuccessMessage(''), 3000);
         } catch (error) {
             setPasswordError(getPasswordChangeErrorMessage(error));
+            setTimeout(() => setPasswordError(''), 3000);
         } finally {
             setIsSubmitting(false);
         }
     }
+
 
     return (
         <KeyboardAvoidingView
@@ -250,6 +281,11 @@ export default function ProfileScreen() {
                 </View>
                 {nameError ? (
                     <Text style={styles.profileError}>{nameError}</Text>
+                ) : null}
+                {nameSuccessMessage ? (
+                    <Text style={styles.passwordSuccessMessage}>
+                        {nameSuccessMessage}
+                    </Text>
                 ) : null}
 
                 {isChangingPassword ? (
