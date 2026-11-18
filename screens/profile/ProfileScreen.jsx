@@ -213,7 +213,7 @@ export default function ProfileScreen() {
             <ScrollView
                 contentContainerStyle={styles.content}
                 keyboardDismissMode="none"
-                keyboardShouldPersistTaps="always"
+                keyboardShouldPersistTaps="handled"
                 showsVerticalScrollIndicator={false}
                 style={styles.scrollView}
             >

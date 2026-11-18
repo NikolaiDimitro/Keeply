@@ -33,6 +33,7 @@ export default function DetailsScreen({ route, navigation }) {
             </Pressable>
             <ScrollView
                 contentContainerStyle={styles.content}
+                keyboardShouldPersistTaps="handled"
                 showsVerticalScrollIndicator={false}
             >
                 <View style={styles.heroCard}>

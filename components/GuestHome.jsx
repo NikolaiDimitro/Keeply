@@ -5,6 +5,7 @@ export default function GuestHome(navigation) {
     return (
         <ScrollView
             contentContainerStyle={styles.content}
+            keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
         >
             <View style={styles.hero}>

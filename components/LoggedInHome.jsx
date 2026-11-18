@@ -42,6 +42,7 @@ export default function LoggedInHome() {
                 styles.content,
                 { paddingBottom: styles.content.paddingBottom + insets.bottom },
             ]}
+            keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
         >
             <View style={styles.greeting}>
@@ -85,6 +86,7 @@ export default function LoggedInHome() {
             {categories.length > 0 ? (
                 <ScrollView
                     horizontal
+                    keyboardShouldPersistTaps="handled"
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={styles.categoryList}
                 >
