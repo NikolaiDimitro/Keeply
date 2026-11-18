@@ -45,7 +45,7 @@ export default function ProfileScreen() {
     const [passwordSuccessMessage, setPasswordSuccessMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const { user } = useContext(AuthenticatedContext);
+    const { user, refreshUser } = useContext(AuthenticatedContext);
 
     const displayName = updatedDisplayName ?? user?.displayName ?? 'Unknown';
     const email = user?.email || 'Unknown';
@@ -103,6 +103,7 @@ export default function ProfileScreen() {
         try {
             await requestApi.changingName(nextName);
             setUpdatedDisplayName(nextName);
+            await refreshUser();
             setChangeName(false);
             setNameSuccessMessage('Името беше променено успешно.');
             setTimeout(() => setNameSuccessMessage(''), 3000);

@@ -1,19 +1,78 @@
-import { useContext } from 'react';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { useCallback, useContext, useState } from 'react';
+import {
+    ActivityIndicator,
+    Pressable,
+    RefreshControl,
+    ScrollView,
+    Text,
+    View,
+} from 'react-native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AuthenticatedContext } from '../providers/authProveders';
 import { loggedInHomeStyles as styles } from '../styles/components';
-import items from '../temporaryData/data.js';
+import { getAllItems } from '../services/itemRequester';
+
+const categoryColors = ['#E9FAF0', '#FFF1E8', '#EEF2FF', '#FFF7D6', '#FCE7F3'];
+
+function getCreatedAtTime(item) {
+    if (item.createdAt?.toMillis) {
+        return item.createdAt.toMillis();
+    }
+
+    const date = item.createdAt?.seconds
+        ? new Date(item.createdAt.seconds * 1000)
+        : new Date(item.createdAt);
+
+    return Number.isNaN(date.getTime()) ? 0 : date.getTime();
+}
+
+function getCategoryColor(index) {
+    const safeIndex = index >= 0 ? index : 0;
+    return categoryColors[safeIndex % categoryColors.length];
+}
 
 export default function LoggedInHome() {
 
     const insets = useSafeAreaInsets();
-    const { user } = useContext(AuthenticatedContext);
+    const navigation = useNavigation();
+    const { user, refreshUser } = useContext(AuthenticatedContext);
+    const [items, setItems] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const [loadError, setLoadError] = useState('');
+
+    const loadItems = useCallback(async (refreshing = false) => {
+        if (refreshing) {
+            setIsRefreshing(true);
+        } else {
+            setIsLoading(true);
+        }
+        setLoadError('');
+
+        try {
+            await refreshUser();
+            setItems(await getAllItems());
+        } catch (error) {
+            setLoadError(error?.message || 'Вещите не можаха да бъдат заредени.');
+        } finally {
+            setIsLoading(false);
+            setIsRefreshing(false);
+        }
+    }, [refreshUser]);
+
+    useFocusEffect(
+        useCallback(() => {
+            loadItems();
+        }, [loadItems]),
+    );
 
     const userLabel = user?.displayName?.trim() || user?.email?.trim() || '?';
     const avatarInitial = userLabel.charAt(0).toLocaleUpperCase('bg-BG');
-    
-    const recentItems = items.slice(0, 3);
+
+    const recentItems = [...items]
+        .sort((first, second) => getCreatedAtTime(second) - getCreatedAtTime(first))
+        .slice(0, 3);
     const categories = Array.from(
         items.reduce((categoryMap, item) => {
 
@@ -26,8 +85,8 @@ export default function LoggedInHome() {
             const category = categoryMap.get(item.category) || {
                 name: item.category,
                 count: 0,
-                color: item.color || '#E9FAF0',
-                mark: item.mark || '•',
+                color: getCategoryColor(categoryMap.size),
+                mark: item.category.charAt(0).toLocaleUpperCase('bg-BG'),
             };
             category.count += 1;
             categoryMap.set(item.category, category);
@@ -44,6 +103,13 @@ export default function LoggedInHome() {
             ]}
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
+            refreshControl={
+                <RefreshControl
+                    onRefresh={() => loadItems(true)}
+                    refreshing={isRefreshing}
+                    tintColor="#258458"
+                />
+            }
         >
             <View style={styles.greeting}>
                 <View>
@@ -77,6 +143,18 @@ export default function LoggedInHome() {
                         : 'Все още нямаш добавени вещи'}
                 </Text>
             </View>
+
+            {isLoading ? (
+                <View style={styles.emptyState}>
+                    <ActivityIndicator color="#258458" />
+                </View>
+            ) : null}
+
+            {loadError ? (
+                <View style={styles.emptyState}>
+                    <Text style={styles.emptyStateText}>{loadError}</Text>
+                </View>
+            ) : null}
 
             <View style={styles.sectionHeading}>
                 <Text style={styles.sectionTitle}>Категории</Text>
@@ -124,6 +202,9 @@ export default function LoggedInHome() {
                 <Pressable
                     accessibilityRole="button"
                     hitSlop={8}
+                    onPress={() => navigation.navigate('Inventory', {
+                        screen: 'InventorList',
+                    })}
                 >
                     <Text style={styles.sectionHint}>Виж всички</Text>
                 </Pressable>
@@ -132,8 +213,13 @@ export default function LoggedInHome() {
             {recentItems.length > 0 ? (
                 <View style={styles.itemsList}>
                     {recentItems.map((item, index) => (
-                        <View
-                            key={item.id || `${item.name}-${index}`}
+                        <Pressable
+                            accessibilityRole="button"
+                            key={item.docId || `${item.name}-${index}`}
+                            onPress={() => navigation.navigate('Inventory', {
+                                screen: 'Details',
+                                params: { item },
+                            })}
                             style={[
                                 styles.itemRow,
                                 index === recentItems.length - 1 &&
@@ -143,21 +229,28 @@ export default function LoggedInHome() {
                             <View
                                 style={[
                                     styles.itemMark,
-                                    { backgroundColor: item.color },
+                                    {
+                                        backgroundColor: getCategoryColor(
+                                            categories.findIndex(
+                                                (category) => category.name === item.category,
+                                            ),
+                                        ),
+                                    },
                                 ]}
                             >
                                 <Text style={styles.itemMarkText}>
-                                    {item.mark}
+                                    {item.category?.charAt(0).toLocaleUpperCase('bg-BG') || '•'}
                                 </Text>
                             </View>
                             <View style={styles.itemDetails}>
                                 <Text style={styles.itemName}>{item.name}</Text>
                                 <Text style={styles.itemMeta}>
-                                    {item.category} · {item.location}
+                                    {[item.category, item.store].filter(Boolean).join(' · ') ||
+                                        'Без допълнителна информация'}
                                 </Text>
                             </View>
                             <Text style={styles.itemArrow}>›</Text>
-                        </View>
+                        </Pressable>
                     ))}
                 </View>
             ) : (
@@ -171,6 +264,9 @@ export default function LoggedInHome() {
             <Pressable
                 accessibilityRole="button"
                 style={styles.addButton}
+                onPress={() => navigation.navigate('Inventory', {
+                    screen: 'Create',
+                })}
             >
                 <Text style={styles.addButtonText}>＋</Text>
                 <Text style={styles.addButtonLabel}>Добави вещ</Text>

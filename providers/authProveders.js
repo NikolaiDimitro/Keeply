@@ -24,9 +24,21 @@ function AuthenticatedProvider({ children, currentUser }) {
 
     let isAuthenticated = !!user;
 
+    async function refreshUser() {
+        const firebaseUser = auth.currentUser;
+
+        if (!firebaseUser) {
+            setUser(null);
+            return;
+        }
+
+        await firebaseUser.reload();
+        setUser(auth.currentUser);
+    }
+
     return (
 
-        <AuthenticatedContext.Provider value={{ user, isAuthenticated, loading }}>
+        <AuthenticatedContext.Provider value={{ user, isAuthenticated, loading, refreshUser }}>
 
             {children}
 

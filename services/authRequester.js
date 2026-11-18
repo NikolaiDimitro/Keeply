@@ -39,6 +39,7 @@ async function changingName(displayName) {
     }
 
     await updateProfile(currentUser, { displayName });
+    await currentUser.reload();
 
 }
 
