@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Entypo } from '@react-native-vector-icons/entypo';
 
 import InventoryNavigation from './InventoryNavigation';
-import LoggedInHome from '../components/LoggedInHome';
+import HomeNavigation from './HomeNavigation';
 import ProfileScreen from '../screens/profile/ProfileScreen';
 
 let Tab = createBottomTabNavigator();
@@ -20,7 +20,7 @@ export function MainTabs() {
         >
             <Tab.Screen
                 name="Home"
-                component={LoggedInHome}
+                component={HomeNavigation}
                 options={{
                     tabBarLabel: 'Начало',
                     tabBarIcon: ({ color, size }) => (
@@ -31,6 +31,14 @@ export function MainTabs() {
             <Tab.Screen
                 name="Inventory"
                 component={InventoryNavigation}
+                listeners={({ navigation }) => ({
+                    tabPress: (event) => {
+                        event.preventDefault();
+                        navigation.navigate('Inventory', {
+                            screen: 'InventorList',
+                        });
+                    },
+                })}
                 options={{
                     tabBarLabel: 'Инвентар',
                     tabBarIcon: ({ color, size }) => (

@@ -132,9 +132,15 @@ export default function LoggedInHome() {
                             {items.length}
                         </Text>
                     </View>
-                    <View style={styles.summaryBadge}>
+                    <Pressable
+                        accessibilityRole="button"
+                        onPress={() => navigation.navigate('Inventory', {
+                            screen: 'InventorList',
+                        })}
+                        style={styles.summaryBadge}
+                    >
                         <Text style={styles.summaryBadgeText}>Моят инвентар</Text>
-                    </View>
+                    </Pressable>
                 </View>
                 <View style={styles.summaryDivider} />
                 <Text style={styles.summaryFootnote}>
@@ -216,10 +222,7 @@ export default function LoggedInHome() {
                         <Pressable
                             accessibilityRole="button"
                             key={item.docId || `${item.name}-${index}`}
-                            onPress={() => navigation.navigate('Inventory', {
-                                screen: 'Details',
-                                params: { item },
-                            })}
+                            onPress={() => navigation.navigate('Details', { item })}
                             style={[
                                 styles.itemRow,
                                 index === recentItems.length - 1 &&

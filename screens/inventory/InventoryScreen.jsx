@@ -1,19 +1,49 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import {
+    ActivityIndicator,
     FlatList,
     Pressable,
-
     Text,
     TextInput,
     View,
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { inventoryStyles as styles } from '../../styles/components';
-import items from '../../temporaryData/data';
+import { getAllItems } from '../../services/itemRequester';
 
-export default function InventoryScreen({ navigation, onAddItem, onSelectItem }) {
+export default function InventoryScreen({ navigation }) {
 
     const [search, setSearch] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Всички');
+    const [items, setItems] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const [loadError, setLoadError] = useState('');
+
+    const loadItems = useCallback(async (refreshing = false) => {
+        if (refreshing) {
+            setIsRefreshing(true);
+        } else {
+            setIsLoading(true);
+        }
+        setLoadError('');
+
+        try {
+            setItems(await getAllItems());
+        } catch (error) {
+            setLoadError(error?.message || 'Вещите не можаха да бъдат заредени.');
+        } finally {
+            setIsLoading(false);
+            setIsRefreshing(false);
+        }
+    }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            loadItems();
+        }, [loadItems]),
+    );
+
     const categories = useMemo(
         () => ['Всички', ...new Set(items.map((item) => item.category).filter(Boolean))],
         [items],
@@ -26,7 +56,7 @@ export default function InventoryScreen({ navigation, onAddItem, onSelectItem })
                 selectedCategory === 'Всички' || item.category === selectedCategory;
             const matchesSearch =
                 !query ||
-                [item.name, item.category, item.location]
+                [item.name, item.category, item.store]
                     .filter(Boolean)
                     .some((value) => value.toLocaleLowerCase('bg-BG').includes(query));
 
@@ -45,12 +75,14 @@ export default function InventoryScreen({ navigation, onAddItem, onSelectItem })
                 ]}
             >
                 <View style={styles.itemMark}>
-                    <Text style={styles.itemMarkText}>{item.mark || '•'}</Text>
+                    <Text style={styles.itemMarkText}>
+                        {item.category?.charAt(0).toLocaleUpperCase('bg-BG') || '•'}
+                    </Text>
                 </View>
                 <View style={styles.itemDetails}>
                     <Text style={styles.itemName}>{item.name}</Text>
                     <Text style={styles.itemMeta}>
-                        {[item.category, item.location].filter(Boolean).join(' · ') ||
+                        {[item.category, item.store].filter(Boolean).join(' · ') ||
                             'Без допълнителна информация'}
                     </Text>
                 </View>
@@ -118,29 +150,45 @@ export default function InventoryScreen({ navigation, onAddItem, onSelectItem })
                     filteredItems.length === 0 && styles.emptyListContent,
                 ]}
                 data={filteredItems}
-                keyExtractor={(item, index) => item.id || `${item.name}-${index}`}
+                keyExtractor={(item, index) => item.docId || `${item.name}-${index}`}
                 renderItem={renderItem}
                 showsVerticalScrollIndicator={false}
+                onRefresh={() => loadItems(true)}
+                refreshing={Boolean(isRefreshing)}
+                ListHeaderComponent={
+                    isLoading ? (
+                        <View style={styles.emptyState}>
+                            <ActivityIndicator color="#258458" />
+                        </View>
+                    ) : loadError ? (
+                        <View style={styles.emptyState}>
+                            <Text style={styles.emptyTitle}>Грешка при зареждането</Text>
+                            <Text style={styles.emptyText}>{loadError}</Text>
+                        </View>
+                    ) : null
+                }
                 ListEmptyComponent={
-                    <View style={styles.emptyState}>
-                        <Text style={styles.emptyTitle}>
-                            {items.length ? 'Няма намерени вещи' : 'Все още нямаш вещи'}
-                        </Text>
-                        <Text style={styles.emptyText}>
-                            {items.length
-                                ? 'Опитай с друга дума или категория.'
-                                : 'Добави първата си вещ, за да я виждаш тук.'}
-                        </Text>
-                        {!items.length && (
-                            <Pressable
-                                accessibilityRole="button"
-                                onPress={() => navigation.navigate('Create')}
-                                style={styles.addButton}
-                            >
-                                <Text style={styles.addButtonText}>＋ Добави вещ</Text>
-                            </Pressable>
-                        )}
-                    </View>
+                    !isLoading && !loadError ? (
+                        <View style={styles.emptyState}>
+                            <Text style={styles.emptyTitle}>
+                                {items.length ? 'Няма намерени вещи' : 'Все още нямаш вещи'}
+                            </Text>
+                            <Text style={styles.emptyText}>
+                                {items.length
+                                    ? 'Опитай с друга дума или категория.'
+                                    : 'Добави първата си вещ, за да я виждаш тук.'}
+                            </Text>
+                            {!items.length && (
+                                <Pressable
+                                    accessibilityRole="button"
+                                    onPress={() => navigation.navigate('Create')}
+                                    style={styles.addButton}
+                                >
+                                    <Text style={styles.addButtonText}>＋ Добави вещ</Text>
+                                </Pressable>
+                            )}
+                        </View>
+                    ) : null
                 }
             />
         </View>

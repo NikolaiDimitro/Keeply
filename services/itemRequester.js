@@ -28,12 +28,48 @@ function getItemDocument(itemId) {
     return doc(db, 'users', getCurrentUserId(), 'items', itemId);
 }
 
+function normalizeDate(value) {
+    if (!value) {
+        return null;
+    }
+
+    if (typeof value.toDate === 'function') {
+        return value.toDate();
+    }
+
+    if (value.seconds != null) {
+        return new Date(value.seconds * 1000);
+    }
+
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? value : date;
+}
+
+function normalizeItem(item) {
+    const purchaseDate = normalizeDate(item.purchaseDate);
+    const warrantyEndDate = normalizeDate(item.warrantyEndDate);
+    const createdAt = normalizeDate(item.createdAt);
+
+    return {
+        ...item,
+        purchaseDate: purchaseDate instanceof Date
+            ? purchaseDate.toLocaleDateString('bg-BG')
+            : purchaseDate,
+        warrantyEndDate: warrantyEndDate instanceof Date
+            ? warrantyEndDate.toLocaleDateString('bg-BG')
+            : warrantyEndDate,
+        createdAt: createdAt instanceof Date
+            ? createdAt.toISOString()
+            : createdAt,
+    };
+}
+
 export async function getAllItems() {
     const snapshot = await getDocs(getItemsCollection());
 
     return snapshot.docs.map((itemDoc) => ({
         docId: itemDoc.id,
-        ...itemDoc.data(),
+        ...normalizeItem(itemDoc.data()),
     }));
 }
 
@@ -44,7 +80,7 @@ export async function getOneItem(docId) {
         return null;
     }
 
-    return { docId: snapshot.id, ...snapshot.data() };
+    return { docId: snapshot.id, ...normalizeItem(snapshot.data()) };
 }
 
 export function createItemId() {
