@@ -141,6 +141,18 @@ export const createStyles = StyleSheet.create({
         marginBottom: 18,
         paddingHorizontal: 14,
     },
+    validationMessage: {
+        color: '#B42318',
+        fontSize: 13,
+        marginBottom: 12,
+        marginTop: -12,
+    },
+    submitError: {
+        color: '#B42318',
+        fontSize: 14,
+        marginBottom: 10,
+        textAlign: 'center',
+    },
     dateInput: {
         alignItems: 'center',
         backgroundColor: '#F8FAFC',
@@ -289,9 +301,14 @@ export const createStyles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#B9F2D0',
         borderRadius: 12,
+        flexDirection: 'row',
+        gap: 8,
         justifyContent: 'center',
         marginTop: 12,
         minHeight: 52,
+    },
+    submitButtonDisabled: {
+        opacity: 0.6,
     },
     submitButtonText: {
         color: '#172B4D',
@@ -446,6 +463,11 @@ export const inventoryStyles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 18,
     },
+    headingTitleGroup: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        gap: 8,
+    },
     title: {
         color: '#172B4D',
         fontSize: 27,
@@ -455,6 +477,19 @@ export const inventoryStyles = StyleSheet.create({
         color: '#5474A5',
         fontSize: 14,
         fontWeight: '600',
+    },
+    headerAddButton: {
+        alignItems: 'center',
+        backgroundColor: '#258458',
+        borderRadius: 12,
+        justifyContent: 'center',
+        minHeight: 40,
+        paddingHorizontal: 12,
+    },
+    headerAddButtonText: {
+        color: '#FFFFFF',
+        fontSize: 13,
+        fontWeight: '700',
     },
     searchInput: {
         backgroundColor: '#FFFFFF',

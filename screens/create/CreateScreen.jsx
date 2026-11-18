@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
+    ActivityIndicator,
     Alert,
     KeyboardAvoidingView,
     Platform,
@@ -48,11 +49,40 @@ function addMonths(date, months) {
     return result;
 }
 
+function getSaveErrorMessage(error) {
+    if (error?.code === 'permission-denied') {
+        return 'Нямаш права да запазиш вещта. Провери правилата за достъп във Firestore.';
+    }
+
+    if (error?.code === 'unauthenticated') {
+        return 'Сесията ти е изтекла. Влез отново и опитай пак.';
+    }
+
+    if (error?.code === 'unavailable') {
+        return 'Услугата временно не е достъпна. Провери интернет връзката и опитай пак.';
+    }
+
+    if (error instanceof Error && error.message) {
+        return `Вещта не можа да бъде запазена: ${error.message}`;
+    }
+
+    return 'Вещта не можа да бъде запазена. Опитай отново.';
+}
+
 export default function CreateScreen() {
     const [isImportant, setIsImportant] = useState(false);
     const [attachments, setAttachments] = useState([]);
+    const [itemName, setItemName] = useState('');
+    const [category, setCategory] = useState('');
+    const [price, setPrice] = useState('');
     const [purchaseDate, setPurchaseDate] = useState(null);
     const [warrantyMonths, setWarrantyMonths] = useState('');
+    const [store, setStore] = useState('');
+    const [notes, setNotes] = useState('');
+    const [fieldErrors, setFieldErrors] = useState({});
+    const [submitError, setSubmitError] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const isSubmittingRef = useRef(false);
     const [activeDatePicker, setActiveDatePicker] = useState(null);
     const warrantyEndDate = purchaseDate && Number(warrantyMonths) > 0
         ? addMonths(purchaseDate, Number(warrantyMonths))
@@ -99,6 +129,7 @@ export default function CreateScreen() {
     function handleDateChange(_, selectedDate) {
         if (selectedDate) {
             setPurchaseDate(selectedDate);
+            clearFieldError('purchaseDate');
         }
 
         if (Platform.OS === 'android') {
@@ -108,6 +139,110 @@ export default function CreateScreen() {
 
     function removeAttachment(id) {
         setAttachments((current) => current.filter((file) => file.id !== id));
+    }
+
+    function clearFieldError(field) {
+        setSubmitError('');
+        setFieldErrors((current) => {
+            if (!current[field]) {
+                return current;
+            }
+
+            const next = { ...current };
+            delete next[field];
+            return next;
+        });
+    }
+
+    async function handleSaveItem() {
+        if (isSubmittingRef.current) {
+            return;
+        }
+
+        setSubmitError('');
+        const normalizedPrice = price.trim().replace(',', '.');
+        const parsedPrice = normalizedPrice ? Number(normalizedPrice) : null;
+        const parsedWarrantyMonths = warrantyMonths
+            ? Number(warrantyMonths)
+            : null;
+        const errors = {};
+
+        if (!itemName.trim()) {
+            errors.itemName = 'Името на вещта е задължително.';
+        }
+
+        if (!category.trim()) {
+            errors.category = 'Категорията е задължителна.';
+        }
+
+        if (!normalizedPrice) {
+            errors.price = 'Цената е задължителна.';
+        } else if (!Number.isFinite(parsedPrice) || parsedPrice < 0) {
+            errors.price = 'Въведи валидна цена, равна или по-голяма от 0.';
+        }
+
+        if (!purchaseDate) {
+            errors.purchaseDate = 'Датата на покупка е задължителна.';
+        } else if (purchaseDate > new Date()) {
+            errors.purchaseDate = 'Датата не може да бъде в бъдещето.';
+        }
+
+        if (!warrantyMonths) {
+            errors.warrantyMonths = 'Срокът на гаранцията е задължителен.';
+        } else if (
+            !Number.isSafeInteger(parsedWarrantyMonths) ||
+            parsedWarrantyMonths <= 0
+        ) {
+            errors.warrantyMonths = 'Въведи цял брой месеци, по-голям от 0.';
+        }
+
+        if (!store.trim()) {
+            errors.store = 'Магазинът е задължителен.';
+        }
+
+        setFieldErrors(errors);
+
+        if (Object.keys(errors).length > 0) {
+            setSubmitError('Поправи полетата, отбелязани с грешка.');
+            return;
+        }
+
+        isSubmittingRef.current = true;
+        setIsSubmitting(true);
+
+        try {
+            await addRequest({
+                name: itemName.trim(),
+                category: category.trim(),
+                price: parsedPrice,
+                purchaseDate,
+                warrantyMonths: parsedWarrantyMonths,
+                warrantyEndDate,
+                store: store.trim(),
+                notes: notes.trim(),
+                isImportant,
+                createdAt: new Date(),
+            });
+            setItemName('');
+            setCategory('');
+            setPrice('');
+            setPurchaseDate(null);
+            setWarrantyMonths('');
+            setStore('');
+            setNotes('');
+            setIsImportant(false);
+            setAttachments([]);
+            setFieldErrors({});
+            setSubmitError('');
+            setActiveDatePicker(null);
+            Alert.alert('Запазено', 'Вещта беше добавена успешно.');
+        } catch (error) {
+            console.error('Could not save item:', error);
+            setSubmitError(getSaveErrorMessage(error));
+        } finally {
+            isSubmittingRef.current = false;
+            setIsSubmitting(false);
+        }
     }
 
     return (
@@ -131,30 +266,54 @@ export default function CreateScreen() {
                     <TextInput
                         accessibilityLabel="Име на вещта"
                         autoCapitalize="sentences"
+                        onChangeText={(value) => {
+                            setItemName(value);
+                            clearFieldError('itemName');
+                        }}
                         placeholder="Например: Безжични слушалки"
                         placeholderTextColor="#8290A5"
                         returnKeyType="next"
                         style={styles.input}
+                        value={itemName}
                     />
+                    {fieldErrors.itemName ? (
+                        <Text style={styles.validationMessage}>{fieldErrors.itemName}</Text>
+                    ) : null}
 
                     <Text style={styles.label}>Категория</Text>
                     <TextInput
                         accessibilityLabel="Категория"
+                        onChangeText={(value) => {
+                            setCategory(value);
+                            clearFieldError('category');
+                        }}
                         placeholder="Например: Електроника"
                         placeholderTextColor="#8290A5"
                         returnKeyType="next"
                         style={styles.input}
+                        value={category}
                     />
+                    {fieldErrors.category ? (
+                        <Text style={styles.validationMessage}>{fieldErrors.category}</Text>
+                    ) : null}
 
                     <Text style={styles.label}>Цена</Text>
                     <TextInput
                         accessibilityLabel="Цена"
                         keyboardType="decimal-pad"
+                        onChangeText={(value) => {
+                            setPrice(value);
+                            clearFieldError('price');
+                        }}
                         placeholder="Например: 49,90"
                         placeholderTextColor="#8290A5"
                         returnKeyType="next"
                         style={styles.input}
+                        value={price}
                     />
+                    {fieldErrors.price ? (
+                        <Text style={styles.validationMessage}>{fieldErrors.price}</Text>
+                    ) : null}
 
                     <Text style={styles.label}>Дата на покупка</Text>
                     <Pressable
@@ -167,18 +326,31 @@ export default function CreateScreen() {
                         </Text>
                         <Text style={styles.dateIcon}>▦</Text>
                     </Pressable>
+                    {fieldErrors.purchaseDate ? (
+                        <Text style={styles.validationMessage}>
+                            {fieldErrors.purchaseDate}
+                        </Text>
+                    ) : null}
 
                     <Text style={styles.label}>Гаранция</Text>
                     <TextInput
                         accessibilityLabel="Продължителност на гаранцията"
                         keyboardType="number-pad"
-                        onChangeText={(value) => setWarrantyMonths(value.replace(/\D/g, ''))}
+                        onChangeText={(value) => {
+                            setWarrantyMonths(value.replace(/\D/g, ''));
+                            clearFieldError('warrantyMonths');
+                        }}
                         placeholder="Брой месеци, например: 24"
                         placeholderTextColor="#8290A5"
                         returnKeyType="next"
                         style={styles.input}
                         value={warrantyMonths}
                     />
+                    {fieldErrors.warrantyMonths ? (
+                        <Text style={styles.validationMessage}>
+                            {fieldErrors.warrantyMonths}
+                        </Text>
+                    ) : null}
 
                     <Text style={styles.label}>Крайна дата на гаранцията</Text>
                     <View style={styles.dateInput}>
@@ -225,20 +397,30 @@ export default function CreateScreen() {
                     <TextInput
                         accessibilityLabel="Магазин"
                         autoCapitalize="words"
+                        onChangeText={(value) => {
+                            setStore(value);
+                            clearFieldError('store');
+                        }}
                         placeholder="Например: Технополис"
                         placeholderTextColor="#8290A5"
                         returnKeyType="next"
                         style={styles.input}
+                        value={store}
                     />
+                    {fieldErrors.store ? (
+                        <Text style={styles.validationMessage}>{fieldErrors.store}</Text>
+                    ) : null}
 
                     <Text style={styles.label}>Бележки</Text>
                     <TextInput
                         accessibilityLabel="Бележки"
                         multiline
+                        onChangeText={setNotes}
                         placeholder="Добави допълнителни подробности"
                         placeholderTextColor="#8290A5"
                         style={[styles.input, styles.notesInput]}
                         textAlignVertical="top"
+                        value={notes}
                     />
 
                     <View style={styles.importantRow}>
@@ -299,9 +481,32 @@ export default function CreateScreen() {
                         </View>
                     ))}
 
-                    <View style={styles.submitButton}>
-                        <Text style={styles.submitButtonText} onPress={addRequest}>Запази вещта</Text>
-                    </View>
+                    {submitError ? (
+                        <Text
+                            accessibilityLiveRegion="polite"
+                            style={styles.submitError}
+                        >
+                            {submitError}
+                        </Text>
+                    ) : null}
+
+                    <Pressable
+                        accessibilityRole="button"
+                        accessibilityState={{ disabled: isSubmitting }}
+                        disabled={isSubmitting}
+                        onPress={handleSaveItem}
+                        style={[
+                            styles.submitButton,
+                            isSubmitting && styles.submitButtonDisabled,
+                        ]}
+                    >
+                        {isSubmitting ? (
+                            <ActivityIndicator color="#172B4D" size="small" />
+                        ) : null}
+                        <Text style={styles.submitButtonText}>
+                            {isSubmitting ? 'Запазване...' : 'Запази вещта'}
+                        </Text>
+                    </Pressable>
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>

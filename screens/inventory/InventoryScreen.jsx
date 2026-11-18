@@ -11,6 +11,7 @@ import { inventoryStyles as styles } from '../../styles/components';
 import items from '../../temporaryData/data';
 
 export default function InventoryScreen({ navigation, onAddItem, onSelectItem }) {
+
     const [search, setSearch] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('Всички');
     const categories = useMemo(
@@ -61,8 +62,15 @@ export default function InventoryScreen({ navigation, onAddItem, onSelectItem })
         <View style={styles.container}>
             <Text style={styles.eyebrow}>МОЯТ ИНВЕНТАР</Text>
             <View style={styles.heading}>
-                <Text style={styles.title}>Всички вещи</Text>
-                <Text style={styles.count}>{items.length}</Text>
+                <View style={styles.headingTitleGroup}>
+                    <Text style={styles.title}>Всички вещи</Text>
+                    <Text style={styles.count}>{items.length}</Text>
+                </View>
+                <Pressable onPress={() => navigation.navigate('Create')}>
+                    <View style={styles.headerAddButton}>
+                        <Text style={styles.headerAddButtonText}>＋ Добави</Text>
+                    </View>
+                </Pressable>
             </View>
 
             <TextInput
@@ -126,7 +134,7 @@ export default function InventoryScreen({ navigation, onAddItem, onSelectItem })
                         {!items.length && (
                             <Pressable
                                 accessibilityRole="button"
-                                onPress={() => navigation.navigate('Create', { screen: 'Create' })}
+                                onPress={() => navigation.navigate('Create')}
                                 style={styles.addButton}
                             >
                                 <Text style={styles.addButtonText}>＋ Добави вещ</Text>

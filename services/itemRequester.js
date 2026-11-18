@@ -1,66 +1,56 @@
-import { collection, getDoc, getDocs, setDoc, setDocs } from 'firebase/firestore';
-import { db } from '../config/firebase';
+import {
+    addDoc,
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    updateDoc,
+} from 'firebase/firestore';
+import { auth, db } from '../config/firebase';
+
+function getCurrentUserId() {
+    const userId = auth.currentUser?.uid;
+
+    if (!userId) {
+        throw new Error('Трябва да влезеш в профила си, за да управляваш вещите.');
+    }
+
+    return userId;
+}
+
+function getItemsCollection() {
+    return collection(db, 'users', getCurrentUserId(), 'items');
+}
+
+function getItemDocument(itemId) {
+    return doc(db, 'users', getCurrentUserId(), 'items', itemId);
+}
 
 export async function getAllItems() {
+    const snapshot = await getDocs(getItemsCollection());
 
-    const snapshot = await getDocs(collection(db, 'items'));
-
-    try {
-
-        return snapshot.docs.map((doc) => ({ docId: doc.id, ...doc.data() }));
-
-    } catch (err) {
-
-        return err;
-
-    }
+    return snapshot.docs.map((itemDoc) => ({
+        docId: itemDoc.id,
+        ...itemDoc.data(),
+    }));
 }
 
 export async function getOneItem(docId) {
+    const snapshot = await getDoc(getItemDocument(docId));
 
-    const snapshot = await getDoc(doc(db, 'items', docId));
-
-    try {
-
-        return { docId: snapshot.id, ...snapshot.data() };
-
-    } catch (err) {
-
-        return err;
-
+    if (!snapshot.exists()) {
+        return null;
     }
 
+    return { docId: snapshot.id, ...snapshot.data() };
 }
 
 export async function addRequest(data) {
+    const itemRef = await addDoc(getItemsCollection(), data);
 
-    const snapshot = await setDoc(doc(collection(db, 'items')), data);
-
-    try {
-
-        return { docId: snapshot.id, ...data };
-
-    } catch (err) {
-
-        return err;
-
-    }
-
+    return itemRef.id;
 }
 
-export async function updateRequest(docId, data) {
-
-    const snapshot = await setDoc(doc(db, 'items', docId), data, { merge: true });
-
-    try {
-
-
-        return { docId: snapshot.id, ...data };
-
-    } catch (err) {
-
-        return err;
-
-    }
-
+export async function updateRequest(id, data) {
+    await updateDoc(getItemDocument(id), data);
 }
