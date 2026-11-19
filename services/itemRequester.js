@@ -1,6 +1,7 @@
 import {
     addDoc,
     collection,
+    deleteDoc,
     doc,
     getDoc,
     getDocs,
@@ -137,4 +138,8 @@ export async function uploadItemAttachments(itemId, files) {
 
 export async function updateRequest(id, data) {
     await updateDoc(getItemDocument(id), data);
+}
+
+export async function deleteRequest(id) {
+    await deleteDoc(getItemDocument(id));
 }

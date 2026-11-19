@@ -113,6 +113,7 @@ export default function CreateScreen() {
     const [purchaseDate, setPurchaseDate] = useState(null);
     const [warrantyMonths, setWarrantyMonths] = useState('');
     const [store, setStore] = useState('');
+    const [location, setLocation] = useState('');
     const [notes, setNotes] = useState('');
     const [fieldErrors, setFieldErrors] = useState({});
     const [submitError, setSubmitError] = useState('');
@@ -273,6 +274,7 @@ export default function CreateScreen() {
                 warrantyMonths: parsedWarrantyMonths,
                 warrantyEndDate,
                 store: store.trim(),
+                location: location.trim(),
                 notes: notes.trim(),
                 isImportant,
                 attachments: uploadedAttachments,
@@ -284,6 +286,7 @@ export default function CreateScreen() {
             setPurchaseDate(null);
             setWarrantyMonths('');
             setStore('');
+            setLocation('');
             setNotes('');
             setIsImportant(false);
             setAttachments([]);
@@ -465,6 +468,18 @@ export default function CreateScreen() {
                     {fieldErrors.store ? (
                         <Text style={styles.validationMessage}>{fieldErrors.store}</Text>
                     ) : null}
+
+                    <Text style={styles.label}>Местоположение</Text>
+                    <TextInput
+                        accessibilityLabel="Местоположение"
+                        autoCapitalize="words"
+                        onChangeText={setLocation}
+                        placeholder="Например: Спалня"
+                        placeholderTextColor="#8290A5"
+                        returnKeyType="next"
+                        style={styles.input}
+                        value={location}
+                    />
 
                     <Text style={styles.label}>Бележки</Text>
                     <TextInput

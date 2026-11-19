@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, Text, View } from 'react-native';
 import ConfirmationDialog from '../../components/ConfirmationDialog';
 import { itemDetailsStyles as styles } from '../../styles/components';
+import { deleteRequest } from '../../services/itemRequester';
 
 function DetailRow({ label, value }) {
     return (
@@ -13,9 +14,26 @@ function DetailRow({ label, value }) {
 }
 
 export default function DetailsScreen({ route, navigation }) {
+
     const { item } = route.params;
     const documents = item.documents || [];
     const [isDeleteDialogVisible, setDeleteDialogVisible] = useState(false);
+    const warrantyDuration = item.warranty || (
+        item.warrantyMonths
+            ? `${item.warrantyMonths} ${item.warrantyMonths === 1 ? 'месец' : 'месеца'}`
+            : null
+    );
+
+    async function handleDeleteItem() {
+        try {
+            await deleteRequest(item.docId);
+            setDeleteDialogVisible(false);
+            navigation.goBack();
+        } catch (error) {
+            setDeleteDialogVisible(false);
+            Alert.alert('Грешка', 'Вещта не можа да бъде изтрита. Опитай отново.');
+        }
+    }
 
     return (
         <View style={styles.screen}>
@@ -64,7 +82,7 @@ export default function DetailsScreen({ route, navigation }) {
 
                 <View style={styles.warrantyCard}>
                     <Text style={styles.sectionTitle}>Гаранция</Text>
-                    <DetailRow label="Продължителност" value={item.warranty} />
+                    <DetailRow label="Продължителност" value={warrantyDuration} />
                     <DetailRow label="Валидна до" value={item.warrantyEndDate} />
                 </View>
 
@@ -120,9 +138,8 @@ export default function DetailsScreen({ route, navigation }) {
                 visible={isDeleteDialogVisible}
                 title="Изтриване на вещ"
                 message={`Сигурни ли сте, че искате да изтриете „${item.name}“?`}
-                note="Потвърждението е само визуално — вещта няма да бъде премахната."
                 onCancel={() => setDeleteDialogVisible(false)}
-                onConfirm={() => setDeleteDialogVisible(false)}
+                onConfirm={handleDeleteItem}
             />
         </View>
     );
