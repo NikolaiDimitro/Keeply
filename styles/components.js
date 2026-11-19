@@ -919,9 +919,55 @@ export const itemEditStyles = StyleSheet.create({
         minHeight: 86,
         justifyContent: 'flex-start',
     },
+    dateInput: {
+        alignItems: 'center',
+        backgroundColor: '#F8FAFC',
+        borderColor: '#CBD5E1',
+        borderRadius: 12,
+        borderWidth: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 14,
+        minHeight: 48,
+        paddingHorizontal: 13,
+    },
+    dateValue: {
+        color: '#172B4D',
+        fontSize: 14,
+    },
+    datePlaceholder: {
+        color: '#8290A5',
+        fontSize: 14,
+    },
+    dateIcon: {
+        color: '#5474A5',
+        fontSize: 18,
+    },
+    datePickerContainer: {
+        backgroundColor: '#F8FAFC',
+        borderRadius: 12,
+        marginBottom: 14,
+        overflow: 'hidden',
+    },
+    dateDoneButton: {
+        alignItems: 'flex-end',
+        borderTopColor: '#E2E8F0',
+        borderTopWidth: 1,
+        padding: 12,
+    },
+    dateDoneText: {
+        color: '#287A58',
+        fontSize: 15,
+        fontWeight: '700',
+    },
     inputValue: {
         color: '#172B4D',
         fontSize: 14,
+    },
+    validationMessage: {
+        color: '#B42318',
+        fontSize: 12,
+        marginTop: 5,
     },
     placeholder: {
         color: '#8290A5',
@@ -962,6 +1008,16 @@ export const itemEditStyles = StyleSheet.create({
         fontSize: 13,
         fontWeight: '600',
     },
+    removeDocumentButton: {
+        marginLeft: 8,
+        paddingHorizontal: 6,
+        paddingVertical: 8,
+    },
+    removeDocumentText: {
+        color: '#B42318',
+        fontSize: 20,
+        fontWeight: '600',
+    },
     fileButton: {
         alignItems: 'center',
         backgroundColor: '#FFFFFF',
@@ -981,8 +1037,12 @@ export const itemEditStyles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#B9F2D0',
         borderRadius: 12,
+        flexDirection: 'row',
         justifyContent: 'center',
         minHeight: 50,
+    },
+    savingIndicator: {
+        marginRight: 8,
     },
     primaryButtonText: {
         color: '#172B4D',

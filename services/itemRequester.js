@@ -136,6 +136,24 @@ export async function uploadItemAttachments(itemId, files) {
     return attachments;
 }
 
+export async function deleteItemAttachments(attachments = []) {
+    const storagePaths = [...new Set(
+        attachments
+            .map((attachment) => attachment?.storagePath)
+            .filter(Boolean),
+    )];
+    const results = await Promise.allSettled(
+        storagePaths.map((storagePath) => deleteObject(ref(storage, storagePath))),
+    );
+    const failures = results.filter((result) => result.status === 'rejected');
+
+    if (failures.length > 0) {
+        const error = new Error(`Could not delete ${failures.length} attachment(s).`);
+        error.cause = failures[0].reason;
+        throw error;
+    }
+}
+
 export async function updateRequest(id, data) {
     await updateDoc(getItemDocument(id), data);
 }

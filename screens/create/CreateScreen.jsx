@@ -20,6 +20,10 @@ import {
     createItemId,
     uploadItemAttachments,
 } from '../../services/itemRequester';
+import {
+    getAttachmentValidationError,
+    inferMimeType,
+} from '../../utils/attachments';
 
 const documentTypes = [
     'Касова бележка',
@@ -71,37 +75,6 @@ function getSaveErrorMessage(error) {
     }
 
     return 'Вещта не можа да бъде запазена. Опитай отново.';
-}
-
-const allowedAttachmentTypes = [
-    'application/pdf',
-    'image/jpeg',
-    'image/png',
-    'image/heic',
-];
-const maxAttachmentSize = 10 * 1024 * 1024;
-
-function inferMimeType(asset) {
-    if (asset.mimeType && asset.mimeType !== 'application/octet-stream') {
-        return asset.mimeType;
-    }
-
-    const extension = asset.name?.toLowerCase().split('.').pop();
-
-    if (extension === 'pdf') {
-        return 'application/pdf';
-    }
-    if (extension === 'jpg' || extension === 'jpeg') {
-        return 'image/jpeg';
-    }
-    if (extension === 'png') {
-        return 'image/png';
-    }
-    if (extension === 'heic') {
-        return 'image/heic';
-    }
-
-    return 'application/octet-stream';
 }
 
 export default function CreateScreen() {
@@ -248,17 +221,12 @@ export default function CreateScreen() {
         setIsSubmitting(true);
 
         try {
-            const invalidAttachment = attachments.find((file) => (
-                !allowedAttachmentTypes.includes(file.mimeType)
-                || (file.size != null && file.size >= maxAttachmentSize)
-            ));
+            const attachmentError = attachments
+                .map(getAttachmentValidationError)
+                .find(Boolean);
 
-            if (invalidAttachment) {
-                throw new Error(
-                    invalidAttachment.mimeType && !allowedAttachmentTypes.includes(invalidAttachment.mimeType)
-                        ? 'Позволени са само PDF и JPEG, PNG или HEIC изображения.'
-                        : 'Един от файловете е по-голям от 10 MB.',
-                );
+            if (attachmentError) {
+                throw new Error(attachmentError);
             }
 
             const itemId = createItemId();
